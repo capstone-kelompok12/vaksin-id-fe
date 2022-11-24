@@ -4,12 +4,17 @@ import './index.css';
 import SetupRouter from './router';
 import { Provider } from 'react-redux'
 import { store } from './store';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import theme from './themes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <SetupRouter />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <SetupRouter />
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );
