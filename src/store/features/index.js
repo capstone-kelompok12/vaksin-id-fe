@@ -1,6 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import example from './example/exampleSlice'
+import sidebar from './sidebar/sidebarSlice'
 
 export const rootReducers = combineReducers ({
-  example
+  sidebar,
 })
