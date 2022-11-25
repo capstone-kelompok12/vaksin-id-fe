@@ -1,12 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Button, Stack } from '@mui/material';
 import useCurrentScreen from './hooks/useCurrentScreen';
 
 function App() {
-  const exampleData = useSelector(state => state.example.data)
   // cara ambil kondisi current screen
   const {mobile, desktop} = useCurrentScreen()
 
@@ -28,9 +25,6 @@ function App() {
           Mode <code>desktop</code> seharusnya button berjejer menyamping, pada <code>mobile</code> berjejer kebawah.
         </p>
         <p>Current screen: {mobile ? 'mobile': 'desktop'}</p>
-        <p>
-          data from state management: <code>{exampleData}</code>
-        </p>
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -39,7 +33,7 @@ function App() {
         >
           Learn React
         </a>
-        <Link to={'/app2'}>Ke App2</Link>
+        {/* <Link to={'/app2'}>Ke App2</Link> */}
       </header>
     </div>
   );
