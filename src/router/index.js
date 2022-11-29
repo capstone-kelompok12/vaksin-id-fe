@@ -18,8 +18,8 @@ const SetupRouter = () => {
           <Route path='/manage-session' element={<ManageSession />}/>
           <Route path='/vaccine-stock' element={<VaccineStock />}/>
           <Route path='/vaccine-list' element={<VaccineList />}/>
-          <Route path='/login' element={<LoginPage/>}/>
         </Route>
+        <Route path='/login' element={<LoginPage/>}/>
       </Routes>
     </BrowserRouter>
   )
