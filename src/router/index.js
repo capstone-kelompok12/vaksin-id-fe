@@ -7,6 +7,7 @@ import ManageSession from '../pages/ManageSession';
 import VaccineStock from '../pages/VaccineStock';
 import VaccineList from '../pages/VaccineList';
 import LoginPage from '../pages/Login';
+import LandingPage from '../pages/LandingPage';
 
 const SetupRouter = () => {
   return (
@@ -20,6 +21,7 @@ const SetupRouter = () => {
           <Route path='/vaccine-list' element={<VaccineList />}/>
         </Route>
         <Route path='/login' element={<LoginPage/>}/>
+        <Route path='/landing' element={<LandingPage/>}/>
       </Routes>
     </BrowserRouter>
   )
