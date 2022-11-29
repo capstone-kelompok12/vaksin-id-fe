@@ -72,7 +72,7 @@ const Sidebar = ({width}) => {
         position: 'fixed',
         top: 0,
         bottom: 0,
-        backgroundColor: 'primary.main',
+        backgroundColor: '#FBFDF7',
         transition: '1s ease',
         px: 2,
       }}

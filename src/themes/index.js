@@ -5,7 +5,7 @@ const theme = createTheme({
   palette:{
     primary: {
       // light: will be calculated from palette.primary.main,
-      main: '#0BEA82',
+      main: '#006D39',
       // dark: will be calculated from palette.primary.main,
       // contrastText: will be calculated to contrast with palette.primary.main
     },
@@ -67,6 +67,15 @@ const theme = createTheme({
         }
       `,
     },
+    MuiButton: {
+      styleOverrides:{
+        root:{
+          borderRadius: 18,
+          p: 2,
+          // fontWeight: 'bold'
+        }
+      }
+    }
   },
 })
 
