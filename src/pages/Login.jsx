@@ -1,32 +1,35 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   TextField,
   Typography,
   Button,
   InputAdornment,
+  Stack,
+  Link,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
-import { createTheme } from "@mui/material/styles";
-import { teal } from "@mui/material/colors";
-import Logo from "../assets/vaksin-id-logo.png";
+import Logo from "../assets/img/logo-vaksin-id-with-name.png";
+import LoginIllustration from '../assets/img/login-illustration.png'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
+import Auth from "../utils/Auth";
 
 const LoginPage = () => {
+  const navigate = useNavigate()
 
   const [values, setValues] = React.useState({
-    amount: '',
+    email: '',
     password: '',
-    weight: '',
-    weightRange: '',
     showPassword: false,
   });
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    setValues({ ...values, [name]: value });
   };
 
   const handleClickShowPassword = () => {
@@ -36,79 +39,72 @@ const LoginPage = () => {
     });
   };
 
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    console.log({values})
+    Auth.login()
+    navigate('/dashboard')
+  }
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const theme = createTheme({
-    palette: {
-      secondary: {
-        main: teal[300],
-      },
-    },
-  });
-
+  
   return (
-    <>
-      <Box
-        style={{
-          display: "flex",
-          flexDirection: "row",
+    <Stack
+      direction={'row'}
+      sx={{
+        height: '100vh'
+      }}
+    >
+      <Stack
+        spacing={3}
+        sx={{
+          width: '40vw',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'linear-gradient(0deg, rgba(0, 109, 57, 0.05), rgba(0, 109, 57, 0.05)), #FBFDF7',
+          px: 12
         }}
       >
-        <Box
-          sx={{
-            backgroundColor: "#e0f2f1",
-            height: 750,
-            width: 500,
+        <img src={LoginIllustration} alt="login-illustration" width={'100%'} style={{marginBottom: '10vh'}}/>
+        <Typography variant="h4">
+          Kelola Fasilitas
+        </Typography>
+        <Typography textAlign={'center'} fontSize={18}>
+          Terima book? Atur Stok Vaksin? Anda dapat mengelolanya dengan mudah
+          disini
+        </Typography>
+      </Stack>
+      <Box
+        sx={{
+          width: '60vw',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          px: 18
+        }}
+      >
+        <img
+          onClick={() => navigate('/')}
+          style={{
+            width: "200px",
           }}
-        >
-          <Typography
-            sx={{
-              textAlign: "center",
-            }}
-            variant="h5"
-          >
-            Kelola Fasilitas
-          </Typography>
-          <Typography
-            sx={{
-              textAlign: "center",
-              marginLeft: 10,
-              width: 250,
-              paddingTop: 2,
-            }}
-            variant="body1"
-          >
-            Terima book? Atur Stok Vaksin? Anda dapat mengelolanya dengan mudah
-            disini
-          </Typography>
-        </Box>
-        <br />
-        <Box
-          sx={{
-            marginLeft: 30,
-            marginTop: 35,
-          }}
-        >
-          <img
-            style={{
-              width: "200px",
-              marginLeft: 200,
-              marginTop: -200,
-            }}
-            src={Logo}
-            alt=""
-            srcset=""
-          />
+          src={Logo}
+          alt=""
+          srcset=""
+        />
+        <Stack spacing={3} sx={{width: '100%', alignItems: 'center'}}>
           <TextField
-            sx={{
-              marginBottom: 5,
-              width: 600,
-            }}
-            id="outlined-basic"
-            label="Nama Pengguna"
             variant="outlined"
+            label="Email"
+            name='email'
             placeholder="Masukkan Email"
+            fullWidth
+            value={values.email}
+            onChange={handleChange}
+            required
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -117,71 +113,51 @@ const LoginPage = () => {
               ),
             }}
           />
-          <br />
           <TextField
-            sx={{
-              width: 600,
-            }}
-            id="outlined-basic"
-            label="Kata Sandi"
             variant="outlined"
+            label="Kata Sandi"
+            name='password'
             placeholder="Masukkan Kata Sandi"
+            fullWidth
+            onChange={handleChange}
+            type={values.showPassword ? "text" : "password"}
+            value={values.password}
+            required
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
                   <LockIcon />
                 </InputAdornment>
               ),
+              endAdornment:(
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    // edge="end"
+                  >
+                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )
             }}
-            type={values.showPassword ? "text" : "password"}
-            value={values.password}
-            onChange={handleChange("password")}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
           />
-          <br />
-          <Typography
-            sx={{
-              marginTop: 2,
-              color: "green",
-            }}
-          >
-            <a
-              href="/"
-              style={{
-                textDecoration: "none",
-              }}
-            >
-              Lupa Kata Sandi?
-            </a>
-          </Typography>
+          <Link element='a' href='#' sx={{alignSelf: 'start'}}>Lupa Kata Sandi?</Link>
           <Button
-            sx={{
-              marginTop: 7,
-              marginLeft: 20,
-              borderRadius: 8,
-              width: 300,
+            type="submit"
+            onClick={(e) => {
+              handleSubmit(e)
             }}
+            sx={{width: 300}}
             variant="contained"
-            color="success"
           >
             Masuk
           </Button>
-        </Box>
+        </Stack>
       </Box>
-    </>
+    </Stack>
   );
 };
-
 
 export default LoginPage;
