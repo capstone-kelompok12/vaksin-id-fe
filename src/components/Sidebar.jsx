@@ -1,13 +1,12 @@
 import React from 'react'
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material'
-import { makeStyles } from 'tss-react/mui';
+import { Box, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material'
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import BookOnlineRoundedIcon from '@mui/icons-material/BookOnlineRounded';
 import EventNoteRoundedIcon from '@mui/icons-material/EventNoteRounded';
 import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
 import VaccinesRoundedIcon from '@mui/icons-material/VaccinesRounded';
-import vaksinIDLogo from '../assets/img/vaksin-id-logo.png'
-import { /*Link as RouterLink,*/ NavLink as NavLinkBase } from 'react-router-dom';
+import vaksinIDLogo from '../assets/img/logo-vaksin-id-with-name.png'
+import { /*Link as RouterLink,*/ NavLink as NavLinkBase, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // override react-router-dom's Link component to the MUI's ListItem component
@@ -15,27 +14,15 @@ const NavLink = React.forwardRef ((props, ref) =>{
   return <NavLinkBase ref={ref} {...props} className={({ isActive }) => `${props.className} ${isActive ? props.activeClassName : ''}`} />
 })
 
-// navLink active style
-const useStyles = makeStyles()((theme) =>{
-  return{
-    activeLink:{
-      backgroundColor: 'white',
-      color: 'primary.main',
-      fontColor:'primary.main',
-      borderRadius: 4
-    }
-  }
-})
-
 const Sidebar = ({width}) => {
-  const {classes} = useStyles()
   const {open} = useSelector(state => state.sidebar)
+  const {pathname} = useLocation()
 
   // add sidebar list item here
   const sidebarComponents = [
     {
       label: 'Dashboard',
-      route: '/',
+      route: '/dashboard',
       icon: <DashboardRoundedIcon />
     },
     {
@@ -66,7 +53,7 @@ const Sidebar = ({width}) => {
   // })
 
   return (
-    <Box
+    <Stack
       sx={{
         width: width,
         position: 'fixed',
@@ -75,10 +62,12 @@ const Sidebar = ({width}) => {
         backgroundColor: '#FBFDF7',
         transition: '1s ease',
         px: 2,
+        zIndex: 9999
       }}
     >
       <Stack
         alignItems= {'center'}
+        sx={{my: 4}}
       >
         <img 
           src={vaksinIDLogo} 
@@ -86,7 +75,7 @@ const Sidebar = ({width}) => {
           width={100}
           height={100}
         />
-        {open && 
+        {/* {open && 
           <Typography 
             variant='h5' 
             sx={{
@@ -98,7 +87,7 @@ const Sidebar = ({width}) => {
           >
             VAKSIN.ID
           </Typography>
-        }
+        } */}
       </Stack>
       <Box>
         <List>
@@ -107,9 +96,9 @@ const Sidebar = ({width}) => {
             return(
               <ListItem key={idx} disablePadding>
                 <ListItemButton 
+                  selected={pathname.includes(route)}
                   component={NavLink}
                   sx={{borderRadius: 2, my: 1}}
-                  activeClassName={classes.activeLink}
                   to={route}
                 >
                   <ListItemIcon>
@@ -122,7 +111,11 @@ const Sidebar = ({width}) => {
           })}
         </List>
       </Box>
-    </Box>
+      <Stack sx={{alignItems: 'center', position: 'fixed', bottom: 0, left: 0, transform: 'translate(25%,0)'}}>
+        <Link underline='hover'>Tentang kami</Link>
+        <Typography>&copy; Capstone Kelompok 12</Typography>
+      </Stack>
+    </Stack>
   )
 }
 
