@@ -1,17 +1,24 @@
-import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Avatar, IconButton, Stack, Typography } from '@mui/material'
-// import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
-import Auth from '../utils/Auth';
+import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { IconButton, Stack, Typography } from '@mui/material'
 import { Container } from '@mui/system';
-// import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import UserAvatar from './UserAvatar';
 
 const Navbar = () => {
   const {pathname} = useLocation()
   const heading = pathname.slice(1).replaceAll('-', ' ').toUpperCase()
-  const navigate = useNavigate()  
+  const [scrolled, setScrolled] = useState(false)
   
+  const addShadow = () =>{
+    if(window.scrollY > 10){
+      setScrolled(true)
+    }else{
+      setScrolled(false)
+    }
+  }
+  window.addEventListener('scroll', addShadow)
+
   return (
     <Container
       sx={{
@@ -23,7 +30,11 @@ const Navbar = () => {
         alignItems: 'center',
         backgroundColor: 'white',
         width: '100%',
-        px: 2
+        '&::WebkitBoxShadow': scrolled ? '0 1px 36px 2px rgba(0, 0, 0, 0.07)' : '',
+        '&::MozBoxShadow': scrolled ? '0 1px 36px 2px rgba(0, 0, 0, 0.07)' : '',
+        boxShadow: scrolled ? '0 1px 36px 2px rgba(0, 0, 0, 0.07)' : '',
+        px: 2,
+        pt: 2
       }}
     >
       <Stack
@@ -48,10 +59,10 @@ const Navbar = () => {
         alignItems='center'
       >
         <IconButton aria-label="toggle-sidebar" size="large">
-          <NotificationsRoundedIcon color='danger' fontSize="inherit" />
+          <NotificationsNoneOutlinedIcon /*color='danger'*/ fontSize="inherit" />
         </IconButton>
         <Typography>Hi, Admin!</Typography>
-        <Avatar sx={{ bgcolor: 'info.main' }} onClick={() => Auth.logout(navigate)}>A</Avatar>
+        <UserAvatar />
       </Stack>
     </Container>
   )
