@@ -77,6 +77,11 @@ const theme = createTheme({
       }
     }
   },
+  color:{
+    greenOpaque: `linear-gradient(0deg, rgba(0, 109, 57, 0.14), rgba(0, 109, 57, 0.14)), #FBFDF7`,
+    neutral: '#fafafb',
+    text: '#191C19'
+  }
 })
 
 export default theme
