@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { IconButton, Stack, Typography } from "@mui/material";
-import { Container } from "@mui/system";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
+// import { Container } from "@mui/system";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import UserAvatar from "./UserAvatar";
 
@@ -20,8 +20,8 @@ const Navbar = () => {
   window.addEventListener("scroll", addShadow);
 
   return (
-    <Container
-      maxWidth="xl"
+    <Box
+      // maxWidth="xl"
       sx={{
         position: "sticky",
         top: 0,
@@ -38,6 +38,7 @@ const Navbar = () => {
         boxShadow: scrolled ? "0 1px 36px 2px rgba(0, 0, 0, 0.07)" : "",
         px: 2,
         pt: 2,
+        zIndex: 999
       }}
     >
       <Stack direction={"row"} spacing={2} alignItems="center">
@@ -61,7 +62,7 @@ const Navbar = () => {
         <Typography>Hi, Admin!</Typography>
         <UserAvatar />
       </Stack>
-    </Container>
+    </Box>
   );
 };
 
