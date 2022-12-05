@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
-import { Breadcrumbs, Chip, Link, Stack, Typography } from '@mui/material'
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Breadcrumbs, Button, Chip, IconButton, Link, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 import SessionStats from '../components/SessionStats';
 import { DataGrid } from '@mui/x-data-grid';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const columns =[
   {field: 'nik', headerName: 'NIK', width: 200},
   {field: 'nama', headerName: 'Nama', width: 200},
   {field: 'email', headerName: 'Email', width: 180},
   {field: 'umur', headerName: 'Umur', width: 90, align: 'center', headerAlign: 'center'},
-  {field: 'antrian', headerName: 'Antrian', width: 90, align: 'center', headerAlign: 'center'},
   {
     field: 'statusBook', 
     headerName: 'Status Book', 
@@ -19,15 +22,40 @@ const columns =[
       const {statusBook, statusColor} = props.row
       return <Chip label={statusBook} color={statusColor} sx={{color: `${statusColor}.text`}}/>
     }
+  },
+  {field: 'antrian', headerName: 'Antrian', width: 90, align: 'center', headerAlign: 'center'},
+  {
+    field: 'confirmation',
+    headerName: 'Terima Book',
+    width: 130,
+    align: 'center',
+    headerAlign: 'center',
+    renderCell: (props) =>{
+      const {antrian} = props.row
+      return(
+        <Stack direction='row' spacing={1}>
+          <IconButton sx={{border: '1px solid'}} color='primary' disabled={antrian !== ''}><CheckIcon /></IconButton>
+          <IconButton sx={{border: '1px solid'}} color='danger' disabled={antrian !== ''}><CloseIcon /></IconButton>
+        </Stack>
+      )
+    }
   },{
     field: 'kehadiran', 
     headerName: 'Kehadiran', 
-    width: 160,
+    width: 130,
+    align: 'center',
+    headerAlign: 'center',
     renderCell: (props) =>{ 
-      const {kehadiran, attendColor} = props.row
-      return kehadiran !== '' && <Chip label={kehadiran} color={attendColor} sx={{color: `${attendColor}.text`}}/>
+      const {antrian} = props.row
+      return (
+        <Stack direction='row' spacing={1}>
+          <IconButton sx={{border: '1px solid'}} color='primary' disabled={antrian === ''}><HowToRegIcon /></IconButton>
+          <IconButton sx={{border: '1px solid'}} color='danger' disabled={antrian === ''}><PersonOffIcon /></IconButton>
+        </Stack>
+      )
     }
   },
+  
 ]
 
 const rows =[
@@ -40,8 +68,6 @@ const rows =[
     antrian: 32,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Hadir',
-    attendColor: 'softSuccess'
   },
   {
     id: 2,
@@ -52,8 +78,6 @@ const rows =[
     antrian: 33,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Tidak hadir',
-    attendColor: 'softDanger'
   },
   {
     id: 3,
@@ -64,8 +88,6 @@ const rows =[
     antrian: 35,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Hadir',
-    attendColor: 'softSuccess'
   },
   {
     id: 4,
@@ -76,8 +98,6 @@ const rows =[
     antrian: 36,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Tidak hadir',
-    attendColor: 'softDanger'
   },
   {
     id: 5,
@@ -88,8 +108,6 @@ const rows =[
     antrian: 37,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Tidak hadir',
-    attendColor: 'softDanger'
   },
   {
     id: 6,
@@ -100,8 +118,6 @@ const rows =[
     antrian: 40,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Tidak hadir',
-    attendColor: 'softDanger'
   },
   {
     id: 7,
@@ -112,8 +128,6 @@ const rows =[
     antrian: 42,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Hadir',
-    attendColor: 'softSuccess'
   },
   {
     id: 8,
@@ -124,8 +138,6 @@ const rows =[
     antrian: 43,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Hadir',
-    attendColor: 'softSuccess'
   },
   {
     id: 9,
@@ -136,8 +148,6 @@ const rows =[
     antrian: 44,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Hadir',
-    attendColor: 'softSuccess'
   },
   {
     id: 10,
@@ -146,10 +156,8 @@ const rows =[
     email: 'jo.busquets@gmail.com',
     umur: 21,
     antrian: '',
-    statusBook: 'Telah ditolak',
-    statusColor: 'softDanger',
-    kehadiran: '',
-    attendColor: ''
+    statusBook: 'Menunggu',
+    statusColor: 'softWarning',
   },
   {
     id: 11,
@@ -158,10 +166,8 @@ const rows =[
     email: 'jo.busquets@gmail.com',
     umur: 36,
     antrian: '',
-    statusBook: 'Telah ditolak',
-    statusColor: 'softDanger',
-    kehadiran: '',
-    attendColor: ''
+    statusBook: 'Menunggu',
+    statusColor: 'softWarning',
   },
   {
     id: 12,
@@ -172,8 +178,6 @@ const rows =[
     antrian: '',
     statusBook: 'Menunggu',
     statusColor: 'softWarning',
-    kehadiran: '',
-    attendColor: ''
   },
   {
     id: 13,
@@ -184,8 +188,6 @@ const rows =[
     antrian: '',
     statusBook: 'Menunggu',
     statusColor: 'softWarning',
-    kehadiran: '',
-    attendColor: ''
   },
   {
     id: 14,
@@ -194,10 +196,8 @@ const rows =[
     email: 'jo.busquets@gmail.com',
     umur: 37,
     antrian: '',
-    statusBook: 'Dibatalkan',
-    statusColor: 'softNeutral',
-    kehadiran: '',
-    attendColor: ''
+    statusBook: 'Menunggu',
+    statusColor: 'softWarning',
   },
   {
     id: 15,
@@ -206,16 +206,19 @@ const rows =[
     email: 'jo.busquets@gmail.com',
     umur: 42,
     antrian: '',
-    statusBook: 'Dibatalkan',
-    statusColor: 'softNeutral',
-    kehadiran: '',
-    attendColor: ''
+    statusBook: 'Menunggu',
+    statusColor: 'softWarning',
   },
 ]
 
-const SessionDetail = () => {
+const BookDetail = () => {
   const navigate = useNavigate()
   const [pageSize, setPageSize] = useState(10)
+  const [SelectedRows, setSelectedRows] = useState([])
+
+  const handleSelect = (selectedRow) =>{
+    setSelectedRows(selectedRow);
+  }
 
   return (
     <Stack
@@ -230,23 +233,55 @@ const SessionDetail = () => {
       <Breadcrumbs
         separator={<NavigateNextIcon />}
       >
-        <Link color={'inherit'} underline='hover' sx={{cursor: 'pointer'}} onClick={() => navigate('/manage-session')}>Manage Session</Link>
+        <Link color={'inherit'} underline='hover' sx={{cursor: 'pointer'}} onClick={() => navigate('/manage-booking')}>Manage Booking</Link>
         <Typography>AstraZeneca-01</Typography>
       </Breadcrumbs>
-      <SessionStats showStatus={true}/>
+      <SessionStats showStatus={false}/>
       <Stack
-      spacing={2}
-      sx={{
-        width: '100%',
-        maxWidth: 1090,
-        // '& .MuiDataGrid-row:hover': {
-        //   cursor: 'pointer',
-        //   color: 'primary.main',
-        // },
-      }}
+        spacing={2}
+        sx={{
+          width: '100%',
+          maxWidth: 1090,
+          position: 'relative',
+          py: 6
+          // '& .MuiDataGrid-row:hover': {
+          //   cursor: 'pointer',
+          //   color: 'primary.main',
+          // },
+        }}
       >
+        {SelectedRows.length > 0 && 
+        <Stack
+          direction={'row'}
+          spacing={1}
+          sx={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            py: 2
+          }}
+        >
+          <Button variant='outlined' >
+            <CheckIcon />
+            Terima Semua
+          </Button>
+          <Button variant='outlined' color='danger' >
+            <CloseIcon />
+            Tolak Semua
+          </Button>
+          <Button variant='outlined' >
+            <HowToRegIcon />
+            Hadir Semua
+          </Button>
+          <Button variant='outlined' color='danger' >
+            <PersonOffIcon />
+            Tidak Hadir Semua
+          </Button>
+        </Stack>}
         <DataGrid 
           autoHeight
+          checkboxSelection
+          onSelectionModelChange={handleSelect}
           columns={columns}
           rows={rows}
           pageSize={pageSize}
@@ -259,4 +294,4 @@ const SessionDetail = () => {
   )
 }
 
-export default SessionDetail
+export default BookDetail
