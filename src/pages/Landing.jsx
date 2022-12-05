@@ -2,6 +2,7 @@ import React from 'react'
 import Banner from '../components/Banner'
 import Hero from '../components/Hero'
 import NavbarLanding from '../components/NavbarLanding'
+import FooterLanding from '../components/footerLanding'
 
 const Landing = () => {
   return (
@@ -9,6 +10,7 @@ const Landing = () => {
       <NavbarLanding />
       <Hero />
       <Banner />
+      <FooterLanding/>
     </>
     
   )

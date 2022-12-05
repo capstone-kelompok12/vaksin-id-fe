@@ -5,12 +5,16 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 const menuList = [
   {
-    label: 'Home',
+    label: 'Beranda',
     path: '/',
   },
   {
-    label: 'About',
+    label: 'Tentang Kami',
     path: '/#about',
+  },
+  {
+    label: 'Layanan',
+    path: '/#service',
   },
 ]
 
