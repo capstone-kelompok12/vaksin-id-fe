@@ -9,6 +9,15 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const heading = pathname.slice(1).replaceAll("-", " ").toUpperCase();
   const [scrolled, setScrolled] = useState(false);
+  
+  const getHeading = () =>{
+    const location = pathname.split('/')
+    if(location.length > 2) {
+      const heading = `${location[1].replaceAll("-", " ")} detail`.toUpperCase()
+      return heading;
+    }
+    return location[1].replaceAll("-", " ").toUpperCase();
+  }
 
   const addShadow = () => {
     if (window.scrollY > 10) {
@@ -49,7 +58,7 @@ const Navbar = () => {
           <MenuRoundedIcon fontSize="inherit" />
         </IconButton> */}
         <Typography variant="h5">
-          {heading !== "" ? heading : "DASHBOARD"}
+          {heading !== "" ? getHeading() : "DASHBOARD"}
         </Typography>
       </Stack>
 

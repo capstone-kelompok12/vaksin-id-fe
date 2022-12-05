@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 // import AddIcon from "@mui/icons-material/Add";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ModalAddSession from "../components/ModalAddSession";
+import { useNavigate } from "react-router-dom";
 // import SortingSession from "../components/SortSession";
 // import CardSessions from "../components/CardSession";
 
@@ -192,13 +193,20 @@ const rows = [
 
 const ManageSession = () => {
   const [pageSize, setPageSize] = useState(10)
+  const navigate = useNavigate()
+  
   return (
     <Stack
       spacing={2}
       sx={{
         width: '100%',
+        maxWidth: 1030,
         // height: '100vh',
         p: 3,
+        '& .MuiDataGrid-row:hover': {
+          cursor: 'pointer',
+          color: 'primary.main',
+        },
       }}
     >
       <ModalAddSession />
@@ -209,6 +217,7 @@ const ManageSession = () => {
         pageSize={pageSize}
         rowsPerPageOptions={[10, 25, 50, 100]}
         onPageSizeChange={(val) => setPageSize(val)}
+        onRowClick={({id, row}) => navigate(`/manage-session/${id}`)}
       />
     </Stack>
   );
