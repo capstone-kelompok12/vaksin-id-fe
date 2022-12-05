@@ -1,287 +1,96 @@
 import React from "react";
-import IconButton from "@mui/material/IconButton";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import { createTheme } from '@mui/material/styles';
-import { grey, cyan } from '@mui/material/colors';
-import { DataGrid } from "@mui/x-data-grid";
-import { Box, Stack } from "@mui/system";
-import { Card, TextField } from "@mui/material";
+import { /*Button, Box, Typography,*/ Card, CardActions, CardContent, Chip, lighten, Stack, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import FilterBooking from "../components/FilterBooking";
+import BloodtypeIcon from '@mui/icons-material/Bloodtype';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 const ManageBooking = () => {
-  const columns = [
-    { field: "id", headerName: "NIK", width: 200 },
-    { field: "name", headerName: "Nama", width: 130 },
-    { field: "email", headerName: "Email", width: 130 },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 90,
-    },
-    {
-      field: "action",
-      headerName: "Aksi",
-      sortable: false,
-      width: 160,
-    },
-  ];
-
-  const rows = [
-    { id: 1234567890, name: "Snow", email: "snow@yuhuu", age: 35 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  ];
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: cyan[300],
-      },
-      secondary: {
-        main: grey[300],
-      },
-    },
-  });
-
+  const navigate = useNavigate()
 
   return (
-    <>
+    <Stack spacing={3} sx={{p: 3}}>
+      <FilterBooking />
       <Stack
+        direction='row'
         sx={{
-          display: "flex",
-          flexDirection: "row",
-          marginTop: 2,
+          width: '100%',
+          maxWidth: 1030,
+          flexWrap: 'wrap',
+          gap: 4,
+          '& .MuiDataGrid-row:hover': {
+            cursor: 'pointer',
+            color: 'primary.main',
+          },
         }}
       >
-        <IconButton aria-label="delete" size="large">
-          <ArrowBackIcon />
-        </IconButton>
-        <h2
-          style={{
-            fontWeight: "lighter",
-            marginBottom: 15,
-          }}
-        >
-          AstraZeneca-01
-        </h2>
-        <Stack
-          sx={{
-            marginLeft: 45,
-            marginTop: -5,
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <Box
-            sx={{
-              marginRight: 10,
-            }}
-          >
-            <h6
-              style={{
-                marginTop: 50,
-                marginBottom: -70,
+        {[1,2,3,4,5,6,7,8,9,0].map(val =>{
+          const id = val
+          return(
+            <Card 
+              key={id} 
+              onClick={() =>navigate(`/manage-booking/${id}`)}
+              sx={{
+                borderRadius: 2, 
+                flexBasis: '31%', 
+                // bgcolor: '#FBFDF7',
+                cursor: 'pointer',
               }}
             >
-              Jenis Vaksin
-            </h6>
-            <h4
-              style={{
-                marginTop: 70,
-              }}
-            >
-              AstraZeneca
-            </h4>
-          </Box>
-          <Box
-            sx={{
-              marginRight: 10,
-            }}
-          >
-            <h6
-              style={{
-                marginTop: 50,
-                marginBottom: -70,
-              }}
-            >
-              Tanggal
-            </h6>
-            <h4
-              style={{
-                marginTop: 70,
-              }}
-            >
-              15 Desember 2022
-            </h4>
-          </Box>
-          <Box
-            sx={{
-              marginRight: 10,
-            }}
-          >
-            <h6
-              style={{
-                marginTop: 50,
-                marginBottom: -70,
-              }}
-            >
-              Waktu
-            </h6>
-            <h4
-              style={{
-                marginTop: 70,
-              }}
-            >
-              08.00-11.00 WIB
-            </h4>
-          </Box>
-        </Stack>
+              <CardContent>
+                <Stack 
+                  direction={'row'} 
+                  sx={{
+                    justifyContent: 'space-between', 
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography>Novavax-01</Typography>
+                  <Chip label='Berlangsung' color='softWarning' sx={{color: 'softWarning.text'}} />
+                </Stack>
+                <Stack sx={{mt: 2}}>
+                  <Typography variant='h5'>34 / 125</Typography>
+                  <Typography variant='h6' gutterBottom>Novavax</Typography>
+                  <Typography 
+                    sx={{
+                      color: lighten('#000', 0.3), 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: .5, 
+                      py: .5
+                    }}
+                  >
+                    <BloodtypeIcon />
+                    Dosis Pertama
+                  </Typography>
+                  <Typography 
+                    sx={{
+                      color: lighten('#000', 0.3), 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: .5, 
+                      py: .5
+                    }}
+                  >
+                    <AccessTimeIcon />
+                    08.00 - 11.00 WIB
+                  </Typography>
+                </Stack>
+              </CardContent>
+              <CardActions 
+                sx={{
+                  bgcolor: 'softDanger.main', 
+                  color: 'softDanger.text',
+                  p: 2
+                }}
+              >
+                <Typography>100+ orang belum dikonfirmasi</Typography>
+              </CardActions>
+            </Card>
+          )
+        })}
       </Stack>
-      <Stack
-        sx={{
-          marginTop: 3,
-          display: "flex",
-          flexDirection: "row",
-          borderBlockColor: "black",
-          border: 2,
-          borderRadius: 2,
-          width: 1200,
-          height: 80,
-        }}
-      >
-        <Card
-          sx={{
-            marginRight: 2,
-            width: 280,
-            height: 50,
-            paddingLeft: 2,
-            marginTop: 1,
-            marginLeft: 2,
-            backgroundColor: "#e0e0e0"
-          }}
-        >
-          <h6
-            style={{
-              marginTop: 3,
-            }}
-          >
-            Total Book Vaksinasi
-          </h6>
-          <h4
-            style={{
-              marginTop: -20,
-            }}
-          >
-            500
-          </h4>
-        </Card>
-        <Card
-          sx={{
-            marginRight: 2,
-            marginTop: 1,
-            width: 280,
-            height: 50,
-            paddingLeft: 2,
-            backgroundColor: "#BEEAF6"
-          }}
-        >
-          <h6
-            style={{
-              marginTop: 3,
-            }}
-          >
-            Kapasitas Vaksinasi
-          </h6>
-          <h4
-            style={{
-              marginTop: -20,
-            }}
-          >
-            100
-          </h4>
-        </Card>
-        <Card
-          sx={{
-            marginRight: 2,
-            marginTop: 1,
-            width: 280,
-            height: 50,
-            paddingLeft: 2,
-            backgroundColor: "#CEFFAC"
-          }}
-        >
-          <h6
-            style={{
-              marginTop: 3,
-            }}
-          >
-            Book Vaksinasi Diterima
-          </h6>
-          <h4
-            style={{
-              marginTop: -20,
-            }}
-          >
-            27
-          </h4>
-        </Card>
-        <Card
-          sx={{
-            marginRight: 2,
-            marginTop: 1,
-            width: 280,
-            height: 50,
-            paddingLeft: 2,
-            backgroundColor: "#FFE082"
-          }}
-        >
-          <h6
-            style={{
-              marginTop: 3,
-            }}
-          >
-            Sisa Kapasitas Vaksinasi
-          </h6>
-          <h4
-            style={{
-              marginTop: -20,
-            }}
-          >
-            73
-          </h4>
-        </Card>
-      </Stack>
-      <TextField
-        sx={{
-          marginTop: 5,
-        }}
-        id="input-with-icon-textfield"
-        label="Cari"
-        placeholder="Cari data dalam tabel.."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <div style={{ height: 400, width: 1000, marginTop: 10 }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          checkboxSelection
-        />
-      </div>
-    </>
+    </Stack>
   );
 };
 
