@@ -43,6 +43,41 @@ const theme = createTheme({
       dark: '#DB444E',
       contrastText: 'rgba(0, 10, 10, 0.87)',
     },
+    softDanger:{
+      light: '#ffe1de',
+      main: '#FFDAD6',
+      dark: '#b29895',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+      text: '#93000A',
+    },
+    softNeutral:{
+      light: '#e7e8e4',
+      main: '#E1E3DE',
+      dark: '#9d9e9b',
+      text: '#454744',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+    },
+    softSuccess:{
+      light: '#d7ffbc',
+      main: '#CEFFAC',
+      dark: '#90b278',
+      text: '#285E00',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+    },
+    softInfo:{
+      light: '#dbe9ff',
+      main: '#D2E4FF',
+      dark: '#939fb2',
+      text: '#004880',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+    },
+    softWarning:{
+      light: '#ffe69b',
+      main: '#FFE082',
+      dark: '#b29c5b',
+      text: '#564500',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+    },
     // Used by `getContrastText()` to maximize the contrast between
     // the background and the text.
     contrastThreshold: 3,
@@ -73,6 +108,13 @@ const theme = createTheme({
           borderRadius: 18,
           p: 2,
           // fontWeight: 'bold'
+        }
+      }
+    },
+    MuiChip: {
+      styleOverrides:{
+        root:{
+          borderRadius: 6,
         }
       }
     }

@@ -9,6 +9,7 @@ import LoginPage from '../pages/Login';
 import Landing from '../pages/Landing';
 import PrivateRoute from './PrivateRoute';
 import ProtectedRoute from './ProtectedRoute';
+import SessionDetail from '../pages/SessionDetail';
 
 const SetupRouter = () => {
   return (
@@ -18,6 +19,7 @@ const SetupRouter = () => {
           <Route path='/dashboard' element={<Dashboard />}/>
           <Route path='/manage-booking' element={<ManageBooking />}/>
           <Route path='/manage-session' element={<ManageSession />}/>
+          <Route path='/manage-session/:id' element={<SessionDetail />}/>
           <Route path='/vaccine-stock' element={<VaccineStock />}/>
           <Route path='/vaccine-list' element={<VaccineList />}/>
         </Route>
