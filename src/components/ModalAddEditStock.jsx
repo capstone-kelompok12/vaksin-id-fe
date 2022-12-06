@@ -53,7 +53,7 @@ const ModalAddEditStock = ({data, edit}) => {
         onClick={handleOpen}
         startIcon={<AddIcon />}
       >
-        Tambah Vaksin
+        Tambah Stok Vaksin 
       </Button>}
 
       <Dialog
