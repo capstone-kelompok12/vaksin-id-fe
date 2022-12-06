@@ -1,16 +1,7 @@
 import React, { useState } from 'react'
-import { Button, IconButton, Modal, Stack, Typography } from '@mui/material'
-import DeleteIcon from "@mui/icons-material/Delete";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "#EEF6ED",
-  boxShadow: 2,
-  p: 4,
-};
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Typography } from '@mui/material'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const ModalDeleteVaksin = () => {
   const [open, setOpen] = useState(false);
@@ -19,38 +10,34 @@ const ModalDeleteVaksin = () => {
 
   return (
     <>
-      <IconButton
+      <IconButton 
+        color='danger'
         onClick={handleOpen}
         aria-label="delete"
-        sx={{backgroundColor: 'error.light', borderRadius: 2, '&:hover': {backgroundColor: 'error.main'}}}
+        sx={{border: '1px solid'}} 
       >
-        <DeleteIcon />
+        <DeleteOutlinedIcon />
       </IconButton>
-      <Modal
+
+      <Dialog
+        fullWidth
+        maxWidth='xs'
         open={open}
         onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Stack
-          spacing={3}
-          sx={{
-            ...style,
-            width: 400,
-            textAlign: "center",
-            borderRadius: 4,
-          }}
-        >
-          <Typography variant='h6' gutterBottom>Hapus Vaksin</Typography>
-          <Typography>Apakah Anda yakin menghapus vaksin?</Typography>
-          <Stack spacing={2} direction='row' sx={{justifyContent: 'center'}}>
-            <Button onClick={handleClose} variant="outlined">
-              Cancel
-            </Button>
-            <Button variant="contained">Hapus</Button>
-          </Stack>
-        </Stack>
-      </Modal>
+      > 
+        <DialogTitle sx={{display: 'flex', alignItems: 'end', gap: 1}}>
+          <ErrorOutlineOutlinedIcon color='danger'fontSize='large' />
+          <Typography variant='h5'>Yakin ingin hapus stok vaksin?</Typography>
+        </DialogTitle>
+          <Divider />
+        <DialogContent>
+          Data yang dihapus tidak dapat dikembalikan.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Batal</Button>
+          <Button onClick={handleClose} color='danger'>Hapus</Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

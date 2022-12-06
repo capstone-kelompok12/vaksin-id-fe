@@ -1,77 +1,85 @@
 import React, { useState } from "react";
 import 
-  { Paper, 
-    Table, 
-    TableBody, 
-    TableContainer, 
-    TableHead, 
-    TableRow, 
-    InputLabel, 
-    MenuItem, 
-    FormControl, 
-    Select,
-    Box, 
-    Typography, 
-    Stack
+  { Box, 
+    Stack,
   } from "@mui/material";
 import ModalAddEditStock from "../components/ModalAddEditStock";
 import ModalDeleteVaksin from "../components/ModalDeleteVaksin";
-import { StyledTableCell, StyledTableRow } from "../components/StyledTable";
+import { DataGrid } from "@mui/x-data-grid";
 
-const cells = [
+const columns = [
+  {field: 'num', headerName: 'No.', width: 120, align: 'center', headerAlign: 'center'},
+  {field: 'nama', headerName: 'Nama Vaksin', width: 220, align: 'center', headerAlign: 'center'},
+  {field: 'dosis', headerName: 'Dosis', width: 200, align: 'center', headerAlign: 'center'},
   {
-    id: 1,
-    label: 'No.'
+    field: 'stok', 
+    headerName: 'Stok Vaksin', 
+    width: 220,
+    align: 'center', 
+    headerAlign: 'center',
+    renderCell: (props) =>{
+      const {stok} = props.row
+      return `${stok} dosis`
+    }
   },
   {
-    id: 2,
-    label: 'Nama'
-  },
-  {
-    id: 3,
-    label: 'Stock'
-  },
-  {
-    id: 4,
-    label: 'Aksi'
+    field: 'aksi', 
+    headerName: 'Aksi', 
+    width: 220,
+    align: 'center', 
+    headerAlign: 'center',
+    renderCell: (props) =>{
+      const {id, nama, dosis, stok} = props.row
+      return(
+        <Stack direction='row' spacing={1}>
+          <ModalDeleteVaksin />
+          <ModalAddEditStock edit={true} data={{id, nama, dosis, stok}} />
+        </Stack>
+      )
+    }
   },
 ]
 
+const rows = [
+  {
+    id: 1,
+    num: 1,
+    nama: 'Sinovac',
+    dosis: 'Pertama',
+    stok: 120
+  },
+  {
+    id: 2,
+    num: 2,
+    nama: 'AstraZeneca',
+    dosis: 'Pertama',
+    stok: 46
+  },
+  {
+    id: 3,
+    num: 3,
+    nama: 'Pfizer',
+    dosis: 'Pertama',
+    stok: 92
+  },
+  {
+    id: 4,
+    num: 4,
+    nama: 'Janssen',
+    dosis: 'Pertama',
+    stok: 102
+  },
+  {
+    id: 5,
+    num: 5,
+    nama: 'Moderna',
+    dosis: 'Pertama',
+    stok: 200
+  },
+];
+
 const VaccineStock = () => {
-
-  const rows = [
-    {
-      id: 1,
-      name: 'Sinovac',
-      stock: 120
-    },
-    {
-      id: 2,
-      name: 'Astrazeneca',
-      stock: 46
-    },
-    {
-      id: 3,
-      name: 'Pfizer',
-      stock: 92
-    },
-    {
-      id: 4,
-      name: 'Janssen',
-      stock: 102
-    },
-    {
-      id: 5,
-      name: 'Moderna',
-      stock: 200
-    },
-  ];
-
-  const [filter, setFilter] = useState("");
-
-  const handleChange = (e) => {
-    setFilter(e.target.value);
-  };
+  const [pageSize, setPageSize] = useState(10)
 
   return (
     <>
@@ -92,62 +100,24 @@ const VaccineStock = () => {
           }}
         >
           <ModalAddEditStock />
-          <Stack direction={'row'} spacing={2}>
-            <Typography sx={{alignSelf: 'center'}}>Stok Vaksin</Typography>
-            <FormControl sx={{ m: 1, minWidth: 200}} size="small">
-              <InputLabel id='filter-label'>
-                Filter Berdasarkan
-              </InputLabel>
-              <Select
-                labelId='filter-label'
-                id="filter-table"
-                value={filter}
-                label="Filter Berdasarkan"
-                onChange={(e) =>handleChange(e)}
-              >
-                {rows.map(({id, name}) => (
-                  <MenuItem key={id} value={name}>{name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Stack>
         </Stack>
-        <TableContainer
-          elevation={3}
+        <Stack
           sx={{
             width: '100%',
+            maxWidth: 1000,
+            // height: '100vh',
+            // p: 3,
           }}
-          component={Paper}
         >
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                {cells.map(({id, label}) =>{
-                  return <StyledTableCell key={id} align="center">{label}</StyledTableCell>
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(({id, name, stock}, idx) => {
-                return(
-                <StyledTableRow key={id}>
-                  <StyledTableCell align="center">{idx + 1}</StyledTableCell>
-                  <StyledTableCell align="center" component="th" scope="row">
-                    {name}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {stock} Botol
-                  </StyledTableCell>
-                  <StyledTableCell align="center" sx={{display: 'flex', gap: 2, justifyContent: 'center'}}>
-                    <ModalDeleteVaksin />
-                    <ModalAddEditStock edit={true} />
-                  </StyledTableCell>
-                </StyledTableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          <DataGrid 
+            autoHeight
+            columns={columns}
+            rows={rows}
+            pageSize={pageSize}
+            onPageSizeChange={(val) => setPageSize(val)}
+            rowsPerPageOptions={[5, 10, 25, 50, 100]}
+          />
+        </Stack>
       </Box>
     </>
   );
