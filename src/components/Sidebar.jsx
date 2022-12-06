@@ -1,13 +1,25 @@
 import React from 'react'
-import { Box, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material'
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import BookOnlineRoundedIcon from '@mui/icons-material/BookOnlineRounded';
-import EventNoteRoundedIcon from '@mui/icons-material/EventNoteRounded';
-import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
-import VaccinesRoundedIcon from '@mui/icons-material/VaccinesRounded';
+import { 
+  Box, 
+  darken, 
+  Link, 
+  List, 
+  ListItem, 
+  ListItemButton, 
+  ListItemIcon, 
+  ListItemText, 
+  Stack, 
+  Typography 
+} from '@mui/material'
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
+import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
+import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
+import VaccinesOutlinedIcon from '@mui/icons-material/VaccinesOutlined';
 import vaksinIDLogo from '../assets/img/logo-vaksin-id-with-name.png'
 import { /*Link as RouterLink,*/ NavLink as NavLinkBase, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import theme from '../themes';
 
 // override react-router-dom's Link component to the MUI's ListItem component
 const NavLink = React.forwardRef ((props, ref) =>{
@@ -21,29 +33,29 @@ const Sidebar = ({width}) => {
   // add sidebar list item here
   const sidebarComponents = [
     {
-      label: 'Dashboard',
+      label: 'Beranda',
       route: '/dashboard',
-      icon: <DashboardRoundedIcon />
+      icon: <DashboardOutlinedIcon />
     },
     {
-      label: 'Manage Booking',
+      label: 'Book Vaksinasi',
       route: '/manage-booking',
-      icon: <BookOnlineRoundedIcon />
+      icon: <ConfirmationNumberOutlinedIcon />
     },
     {
-      label: 'Manage Session',
+      label: 'Sesi Vaksinasi',
       route: '/manage-session',
-      icon: <EventNoteRoundedIcon />
+      icon: <EventOutlinedIcon />
     },
     {
-      label: 'Vaccine Stock',
+      label: 'Stok Vaksin',
       route: '/vaccine-stock',
-      icon: <ShowChartRoundedIcon />
+      icon: <TimelineOutlinedIcon />
     },
     {
-      label: 'Vaccine List',
+      label: 'Daftar Vaksin',
       route: '/vaccine-list',
-      icon: <VaccinesRoundedIcon />
+      icon: <VaccinesOutlinedIcon />
     },
   ]
 
@@ -59,7 +71,7 @@ const Sidebar = ({width}) => {
         position: 'fixed',
         top: 0,
         bottom: 0,
-        backgroundColor: '#FBFDF7',
+        background: theme.color.greenOpaque,
         transition: '1s ease',
         px: 2,
         zIndex: 9999
@@ -67,7 +79,7 @@ const Sidebar = ({width}) => {
     >
       <Stack
         alignItems= {'center'}
-        sx={{my: 4}}
+        sx={{mt: 4}}
       >
         <img 
           src={vaksinIDLogo} 
@@ -94,17 +106,28 @@ const Sidebar = ({width}) => {
           {sidebarComponents.map((item, idx) =>{
             const {label, route, icon} = item;
             return(
-              <ListItem key={idx} disablePadding>
+              <ListItem key={idx} disablePadding >
                 <ListItemButton 
                   selected={pathname.includes(route)}
                   component={NavLink}
-                  sx={{borderRadius: 2, my: 1}}
+                  sx={{
+                    borderRadius: 2, 
+                    my: 1,
+                    '&.Mui-selected':{
+                      bgcolor: '#006D39',
+                      color: theme.color.neutral,
+                      '&:hover':{
+                        bgcolor: darken('#006D39', 0.125),
+                        color: theme.color.neutral,
+                      }
+                    }
+                  }}
                   to={route}
                 >
-                  <ListItemIcon>
+                  <ListItemIcon sx={{color: 'inherit'}}>
                     {icon}
                   </ListItemIcon>
-                  {open && <ListItemText primary={label} sx={{transition: '1s ease'}} />}
+                  {open && <ListItemText primary={label} sx={{transition: '.5s ease'}} />}
                 </ListItemButton>
               </ListItem>            
             )
