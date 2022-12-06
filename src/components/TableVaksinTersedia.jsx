@@ -49,7 +49,7 @@ const TableVaksinTersedia = () => {
     <Box sx={{my: 4}}>
       <TableContainer>
         <Typography variant='h5'>Statistik Vaksin Tersedia</Typography>
-        <Typography variant='subtitle2' gutterBottom>Update: Januari 2022</Typography>
+        {/* <Typography variant='subtitle2' gutterBottom>Update: Januari 2022</Typography> */}
         <Table>
           <TableHead>
             <TableRow sx={{backgroundColor: '#EEF6ED'}} height={52}>

@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import 
   { 
-    // InputLabel, 
-    // MenuItem, 
-    // FormControl, 
-    // Select,
     Box, 
     Typography, 
     Stack,
   } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import ListVaccineIllustration from '../assets/img/list-vaccine-illustration.png'
 
 const columns = [
   {
@@ -22,8 +19,8 @@ const columns = [
     headerAlign: 'center',
   },{
     field: 'name',
-    headerName: 'Nama',
-    width: 560,
+    headerName: 'Nama Vaksin',
+    width: 780,
     // headerClassName: 'super-app-theme--header',
     hideable: false,
     align: 'center',
@@ -81,12 +78,7 @@ const rows = [
 
 
 const VaccineList = () => {
-  // const [filter, setFilter] = useState("");
-  const [size, setSize] = useState(5);
-
-  // const handleChange = (e) => {
-  //   setFilter(e.target.value);
-  // };
+  const [size, setSize] = useState(10);
 
   return (
     <>
@@ -101,39 +93,30 @@ const VaccineList = () => {
       >
         <Stack 
           direction={'row'} 
+          spacing={2}
           sx={{
-            justifyContent: 'space-between', 
             alignItems: 'center',
             width: '100%'
           }}
         >
-          <Typography>
-            List Vaksin yang sudah terdaftar dan bersertifikat halal
-          </Typography>
-          {/* <Stack direction={'row'} spacing={2}>
-            <Typography sx={{alignSelf: 'center'}}>Stok Vaksin</Typography>
-            <FormControl sx={{ m: 1, minWidth: 200}} size="small">
-              <InputLabel id='filter-label'>
-                Filter Berdasarkan
-              </InputLabel>
-              <Select
-                labelId='filter-label'
-                id="filter-table"
-                value={filter}
-                label="Filter Berdasarkan"
-                onChange={(e) =>handleChange(e)}
-              >
-                {rows.map(({id, name}) => (
-                  <MenuItem key={id} value={name}>{name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Stack> */}
+          <img 
+            src={ListVaccineIllustration} 
+            alt="list-vaccine-illustration" 
+            width={200}
+          />
+          <Box>
+            <Typography variant="h6" color='primary'>
+              Daftar Vaksin COVID-19 yang tersedia di Indonesia
+            </Typography>
+            <Typography>
+              Vaksin yang disediakan adalah vaksin yang sudah dipastikan keamanan dan keefektivitasannya.
+            </Typography>
+          </Box>
         </Stack>
         <Box 
           sx={{
-            height: 371,
-            width: 700,
+            width: '100%',
+            maxWidth: 920,
             // '& .super-app-theme--header': {
             //   bgcolor: '#EEF6ED',
             // }
@@ -141,11 +124,12 @@ const VaccineList = () => {
         >
           <DataGrid
             // loading={true}
+            autoHeight
             columns={columns}
             rows={rows}
             pageSize={size}
             onPageSizeChange={(pageSize) => setSize(pageSize)}
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, 50]}
           />
         </Box>
       </Box>
