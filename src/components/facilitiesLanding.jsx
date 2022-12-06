@@ -1,159 +1,77 @@
 import React from "react";
 import { Stack } from "@mui/system";
-import { Card, Container, Typography } from "@mui/material";
+import { Card, Container, Grid, Typography } from "@mui/material";
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
 import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 import BloodtypeRoundedIcon from "@mui/icons-material/BloodtypeRounded";
 import EventIcon from "@mui/icons-material/Event";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 
-const facilitiesLanding = () => {
-  return (
-    <>
-      <Container>
-        <Stack
-          sx={{
-            marginTop: 10,
-            display: "flex",
-            flexDirection: "row",
-            gap: 4,
-          }}
-        >
-          <Card
-            sx={{
-              width: 350,
-              padding: 4,
-              borderRadius: 5,
-            }}
-          >
-            <HealthAndSafetyIcon
-              sx={{
-                fontSize: 40,
-              }}
-            />
-            <br />
-            <Typography
-              sx={{
-                marginTop: -10,
-              }}
-              variant="p"
-              fontSize={22}
-              fontWeight={400}
-            >
-              Temukan fasilitas kesehatan penyelenggara vaksinasi terdekat
-            </Typography>
-          </Card>
-          <Card
-            sx={{
-              width: 350,
-              padding: 4,
-              borderRadius: 5,
-            }}
-          >
-            <BarChartRoundedIcon
-              sx={{
-                fontSize: 40,
-              }}
-            />
-            <br />
-            <Typography
-              sx={{
-                marginTop: -10,
-              }}
-              variant="p"
-              fontSize={22}
-              fontWeight={400}
-            >
-              Dapatkan informasi ketersediaan vaksin di Indonesia.{" "}
-            </Typography>
-          </Card>
-          <Card
-            sx={{
-              width: 350,
-              padding: 4,
-              borderRadius: 5,
-            }}
-          >
-            <BloodtypeRoundedIcon
-              sx={{
-                fontSize: 40,
-              }}
-            />
-            <br />
-            <Typography
-              sx={{
-                marginTop: -10,
-              }}
-              variant="p"
-              fontSize={22}
-              fontWeight={400}
-            >
-              Book vaksinasi dengan jenis vaksin pilihan Anda.{" "}
-            </Typography>
-          </Card>
-        </Stack>
+const cards = [
+  {
+    id: 1,
+    size: 4,
+    icon: <HealthAndSafetyIcon fontSize='large'/>,
+    text: 'Temukan fasilitas kesehatan penyelenggara vaksinasi terdekat'
+  },
+  {
+    id: 2,
+    size: 4,
+    icon: <BarChartRoundedIcon fontSize='large'/>,
+    text: 'Dapatkan informasi ketersediaan vaksin di Indonesia.'
+  },
+  {
+    id: 3,
+    size: 4,
+    icon: <BloodtypeRoundedIcon fontSize='large' />,
+    text: 'Book vaksinasi dengan jenis vaksin pilihan Anda.'
+  },
+  {
+    id: 4,
+    size: 4,
+    icon: <EventIcon fontSize='large' />,
+    text: 'Pilih waktu dan lokasi vaksinasi sesuai keinginan Anda'
+  },
+  {
+    id: 5,
+    size: 8,
+    icon: <ConfirmationNumberIcon fontSize='large' />,
+    text: 'Nikmati kemudahan mendapatkan kuota vaksinasi dengan hanya satu tiket untuk seluruh anggota keluarga'
+  },
+]
 
-        <Stack
-          sx={{
-            marginTop: 3,
-            display: "flex",
-            flexDirection: "row",
-            gap: 4,
-          }}
-        >
-          <Card
-            sx={{
-              width: 300,
-              padding: 4,
-              borderRadius: 5,
-            }}
-          >
-            <EventIcon
-              sx={{
-                fontSize: 40,
-              }}
-            />
-            <br />
-            <Typography
-              sx={{
-                marginTop: -10,
-              }}
-              variant="p"
-              fontSize={22}
-              fontWeight={400}
-            >
-              Temukan fasilitas kesehatan penyelenggara vaksinasi terdekat
-            </Typography>
-          </Card>
-          <Card
-            sx={{
-              width: 700,
-              padding: 4,
-              borderRadius: 5,
-            }}
-          >
-            <ConfirmationNumberIcon
-              sx={{
-                fontSize: 40,
-              }}
-            />
-            <br />
-            <Typography
-              sx={{
-                marginTop: -10,
-              }}
-              variant="p"
-              fontSize={22}
-              fontWeight={400}
-            >
-              Nikmati kemudahan mendapatkan kuota vaksinasi dengan hanya satu
-              tiket untuk seluruh anggota keluarga{" "}
-            </Typography>
-          </Card>
-        </Stack>
-      </Container>
-    </>
+const FacilitiesLanding = () => {
+  return (
+    <Container sx={{flexGrow: 1}}>
+      <Grid container spacing={2}>
+        {cards.map(item =>{
+          const {id, size, icon, text} = item
+          return(
+            <Grid key={id} item xs={size}>
+              <Card
+                elevation={3}
+                sx={{
+                  height: 200,
+                  borderRadius: 4,
+                  p: 4,
+                }}
+              >
+                <Stack spacing={2}>
+                  {icon}
+                  <Typography
+                    variant="h6"
+                    fontWeight={400}
+                  >
+                    {text}
+                  </Typography>
+                </Stack>
+              </Card>            
+            </Grid>
+          )
+        })}
+      </Grid>
+    </Container>
   );
 };
 
-export default facilitiesLanding;
+export default FacilitiesLanding;

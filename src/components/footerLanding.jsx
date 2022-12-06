@@ -1,92 +1,64 @@
 import React from "react";
-import { Box, Button, Typography, Container } from "@mui/material";
+import { Box, Typography, Container, Stack, Link, lighten, IconButton } from "@mui/material";
 import Logo from "../assets/img/logo-vaksin-id-with-name.png";
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import CopyrightIcon from '@mui/icons-material/Copyright';
+import theme from "../themes";
 
-
-const footerLanding = () => {
+const FooterLanding = () => {
   return (
     <>
       <Box
         sx={{
-          marginTop: 110,
-          backgroundColor: "#b2dfdb",
+          background: theme.color.greenOpaque,
+          mt: 6
         }}
       >
-        <Container
-          sx={{
-            paddingTop: 5,
-          }}
-        >
-          <Box
+        <Container>
+          <Stack 
+            direction='row'
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 5,
+              justifyContent: 'space-between',
+              alignItems: 'start',
+              py: 6
             }}
           >
-            <Button
-              sx={{
-                fontSize: 14,
-                color: "#006D39",
-              }}
-              variant="text"
-            >
-              Syarat dan Ketentuan
-            </Button>
-            <Button
-              sx={{
-                fontSize: 14,
-                color: "#006D39",
-              }}
-              variant="text"
-            >
-              Kebijakan Privasi
-            </Button>
+            <Stack direction='row' spacing={2}>
+              <Link underline="hover">
+                Syarat dan Ketentuan
+              </Link>
+              <Link underline="hover">
+                Kebijakan Privasi
+              </Link>
+            </Stack>
+
             <img
-              style={{
-                justifyContent: "center",
-                marginLeft: 150,
-                marginTop: -20,
-              }}
-              width={"60px"}
-              height={"60px"}
+              width={68}
+              height={68}
               src={Logo}
-              alt=""
+              alt="logo-vaksin-id"
             />
-            <Box
-              sx={{
-                display: "flex",
-                gap: 3,
-                marginLeft: 40,
-                color: "#006D39",
-              }}
-            >
-              <TwitterIcon />
-              <FacebookRoundedIcon />
-              <InstagramIcon />
-            </Box>
-          </Box>
-          <Typography
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              fontSize: 14,
-              marginTop: 2,
-              marginLeft: 115,
-              color: "#5C5F5B",
-            }}
-          >
-            <CopyrightIcon />
-            VAKSIN.ID. All rights reserved.
-          </Typography>
+
+            <Stack spacing={3} sx={{alignItems: 'end', color: 'primary.main'}}>
+              <Stack direction={'row'} spacing={1}>
+                <IconButton color="inherit">
+                  <TwitterIcon />
+                </IconButton>
+                <IconButton color="inherit">
+                  <FacebookRoundedIcon />
+                </IconButton>
+                <IconButton color="inherit">
+                  <InstagramIcon />
+                </IconButton>
+              </Stack>
+              <Typography sx={{color: lighten('#000', 0.2)}}>&copy; VAKSIN.ID. All rights reserved.</Typography>
+            </Stack>
+          </Stack>
         </Container>
       </Box>
     </>
   );
 };
 
-export default footerLanding;
+export default FooterLanding;

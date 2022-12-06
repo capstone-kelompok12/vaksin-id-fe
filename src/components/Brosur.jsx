@@ -1,13 +1,13 @@
 import React from 'react'
-import { Avatar, Box, Button, Card, CardContent, Rating, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, CardContent, Container, Rating, Stack, Typography } from '@mui/material'
 import MobileApp from '../assets/img/mobile-app.png'
 import UserAvatar from '../assets/img/user-avatar.png'
 
 const Brosur = () => {
   return (
-    <Box
+    <Container
       sx={{
-        height: '68vh',
+        height: '30rem',
         background: 'linear-gradient(95.17deg, rgba(234, 241, 255, 0.7) 0%, #BEEAF6 48.96%, rgba(195, 255, 207, 0.5) 100%)',
         borderRadius: 4,
         display: 'flex',
@@ -34,13 +34,38 @@ const Brosur = () => {
           gap: 4
         }}
       >
-        <img src={MobileApp} alt='mobile-app' width={260} style={{transform: 'translate(-14px, 32px)'}}/>
-        <Box sx={{pt: 4}}>
-          <Typography variant='h5'>10k+</Typography>
-          <Typography gutterBottom>Pengguna telah terdaftar</Typography>
-          <Typography variant='h5'>8k+</Typography>
-          <Typography>Book vaksinasi telah dilayani</Typography>
-        </Box>
+        <img 
+          src={MobileApp} 
+          alt='mobile-app' 
+          height={360} 
+          style={{position: 'absolute', transform: 'translate(-32px, 88px)'}}
+        />
+        <Stack sx={{position: 'relative', pt: 4}} spacing={2}>
+          <Stack
+            sx={{
+              borderRadius: 2,
+              background: 'rgba(190, 234, 246, 0.7)',
+              color: 'softInfo.text',
+              transform: 'translate(135%, 0)',
+              p: 1
+            }}
+          >
+            <Typography variant='h5'>10k+</Typography>
+            <Typography gutterBottom>Pengguna telah terdaftar</Typography>
+          </Stack>
+          <Stack
+            sx={{
+              borderRadius: 2,
+              background: 'rgba(206, 255, 172, 0.4)',
+              color: 'softSuccess.text',
+              transform: 'translate(120%, 0)',
+              p: 1
+            }}
+          >
+            <Typography variant='h5'>8k+</Typography>
+            <Typography>Book vaksinasi telah dilayani</Typography>
+          </Stack>
+        </Stack>
         <Card 
           sx={{
             width: 330, 
@@ -52,7 +77,7 @@ const Brosur = () => {
             },
             backdropFilter: 'blur(20px)',
             border: '1px solid rgba(250,250,251,0.35)',
-            transform: 'translate(200px, 170px)'
+            transform: 'translate(200px, 220px)'
           }}
         >
           <CardContent>
@@ -69,7 +94,7 @@ const Brosur = () => {
           </CardContent>
         </Card>
       </Box>
-    </Box>
+    </Container>
   )
 }
 
