@@ -5,19 +5,34 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 const menuList = [
   {
-    label: 'Home',
+    label: 'Beranda',
+    top: 0,
     path: '/',
   },
   {
-    label: 'About',
+    label: 'Tentang Kami',
+    top: 545,
     path: '/#about',
+  },
+  {
+    label: 'Layanan',
+    top: 1050,
+    path: '/#service',
   },
 ]
 
 const NavbarLanding = () => {
-  const {pathname} = useLocation()
+  const { hash } = useLocation()
   const navigate = useNavigate()
-    
+
+  const handleNav = ({top, path}) =>{
+    navigate(path)
+    window.scrollTo({
+      top: top,
+      behavior: 'smooth'
+    })
+  }
+
   return (
     <Box
       sx={{
@@ -48,9 +63,14 @@ const NavbarLanding = () => {
         <Stack>
           <MenuList sx={{display: 'flex', flexDirection: 'row', gap: 2}}>
             {menuList.map(item =>{
-              const {label, path} = item
+              const {label, top, path} = item
               return(
-                <MenuItem key={label} sx={{borderRadius: 4, color: 'primary.dark'}} selected={path === pathname}>
+                <MenuItem 
+                  key={label} 
+                  selected={path.slice(1) === hash}
+                  onClick={() => handleNav({top, path})}
+                  sx={{borderRadius: 4, color: 'primary.dark'}} 
+                >
                   {label}
                 </MenuItem>
               )

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Button, Container, Stack, Typography } from '@mui/material'
-import HeroImg from '../assets/img/logo-vaksin-id-with-name.png'
+import HeroImg from '../assets/img/app-demo.png'
 import MilitaryTechRoundedIcon from '@mui/icons-material/MilitaryTechRounded';
 import VaksinSlider from './VaksinSlider';
 
@@ -9,7 +9,8 @@ const Hero = () => {
     <Container
       disableGutters
       sx={{
-        height: '85vh',
+        height: '80vh',
+        maxHeight: '45rem',
         width: '100%',
         p: 0
       }}
@@ -20,7 +21,7 @@ const Hero = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-          height: '70vh',
+          height: '85%',
           background: 'linear-gradient(90deg, rgba(195, 255, 207, 0.5) 0%, #BEEAF6 48.96%, rgba(234, 241, 255, 0.7) 100%)',
           borderRadius: '18px 18px 0px 0px',
           p: 4,
@@ -57,7 +58,7 @@ const Hero = () => {
         <img 
           src={HeroImg} 
           alt="hero-img" 
-          width={320}
+          height={380}
         />
       </Box>
       <VaksinSlider />

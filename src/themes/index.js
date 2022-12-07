@@ -106,6 +106,7 @@ const theme = createTheme({
       styleOverrides:{
         root:{
           borderRadius: 18,
+          textTransform: 'none',
           p: 2,
           // fontWeight: 'bold'
         }

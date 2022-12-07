@@ -8,6 +8,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './themes';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import 'react-slideshow-image/dist/styles.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
