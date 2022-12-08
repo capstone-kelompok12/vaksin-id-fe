@@ -5,7 +5,7 @@ const theme = createTheme({
   palette:{
     primary: {
       // light: will be calculated from palette.primary.main,
-      main: '#0BEA82',
+      main: '#006D39',
       // dark: will be calculated from palette.primary.main,
       // contrastText: will be calculated to contrast with palette.primary.main
     },
@@ -43,6 +43,41 @@ const theme = createTheme({
       dark: '#DB444E',
       contrastText: 'rgba(0, 10, 10, 0.87)',
     },
+    softDanger:{
+      light: '#ffe1de',
+      main: '#FFDAD6',
+      dark: '#b29895',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+      text: '#93000A',
+    },
+    softNeutral:{
+      light: '#e7e8e4',
+      main: '#E1E3DE',
+      dark: '#9d9e9b',
+      text: '#454744',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+    },
+    softSuccess:{
+      light: '#d7ffbc',
+      main: '#CEFFAC',
+      dark: '#90b278',
+      text: '#285E00',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+    },
+    softInfo:{
+      light: '#dbe9ff',
+      main: '#D2E4FF',
+      dark: '#939fb2',
+      text: '#004880',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+    },
+    softWarning:{
+      light: '#ffe69b',
+      main: '#FFE082',
+      dark: '#b29c5b',
+      text: '#564500',
+      contrastText: 'rgba(0, 10, 10, 0.87)',
+    },
     // Used by `getContrastText()` to maximize the contrast between
     // the background and the text.
     contrastThreshold: 3,
@@ -67,7 +102,29 @@ const theme = createTheme({
         }
       `,
     },
+    MuiButton: {
+      styleOverrides:{
+        root:{
+          borderRadius: 18,
+          textTransform: 'none',
+          p: 2,
+          // fontWeight: 'bold'
+        }
+      }
+    },
+    MuiChip: {
+      styleOverrides:{
+        root:{
+          borderRadius: 6,
+        }
+      }
+    }
   },
+  color:{
+    greenOpaque: `linear-gradient(0deg, rgba(0, 109, 57, 0.14), rgba(0, 109, 57, 0.14)), #FBFDF7`,
+    neutral: '#fafafb',
+    text: '#191C19'
+  }
 })
 
 export default theme
