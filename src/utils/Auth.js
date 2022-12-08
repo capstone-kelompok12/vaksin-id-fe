@@ -5,8 +5,9 @@ const Auth = {
     if(Cookies.get('token')) return true
     return null
   },
-  login(){
-    Cookies.set('token', true)
+  storeToken(token, navigate){
+    Cookies.set('token', token)
+    navigate('/dashboard')
   },
   logout(navigate){
     Cookies.remove('token')
