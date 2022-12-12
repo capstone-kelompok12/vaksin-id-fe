@@ -11,6 +11,7 @@ import PrivateRoute from './PrivateRoute';
 import ProtectedRoute from './ProtectedRoute';
 import SessionDetail from '../pages/SessionDetail';
 import BookDetail from '../pages/BookDetail';
+import NotFound from '../pages/NotFound';
 
 const SetupRouter = () => {
   return (
@@ -28,6 +29,7 @@ const SetupRouter = () => {
         <Route path='/' element={<ProtectedRoute />}>
           <Route index element={<Landing/>}/>
           <Route path='/login' element={<LoginPage/>}/>
+          <Route path='/notfound' element={<NotFound/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
