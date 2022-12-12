@@ -30,7 +30,7 @@ const SetupRouter = () => {
           <Route index element={<Landing/>}/>
           <Route path='/login' element={<LoginPage/>}/>
         </Route>
-        <Route path='/notfound' element={<NotFound/>}/>
+        <Route path='*' element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
   )
