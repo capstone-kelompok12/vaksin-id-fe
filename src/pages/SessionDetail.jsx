@@ -1,17 +1,34 @@
 import React, { useState } from 'react'
-import { Breadcrumbs, Chip, Link, Stack, Typography } from '@mui/material'
+import { Breadcrumbs, Button, Chip, IconButton, Link, Stack, Typography } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useNavigate } from 'react-router-dom';
 import SessionStats from '../components/SessionStats';
 import { DataGrid } from '@mui/x-data-grid';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const columns =[
   {field: 'nik', headerName: 'NIK', width: 200},
   {field: 'nama', headerName: 'Nama', width: 200},
   {field: 'email', headerName: 'Email', width: 180},
   {field: 'umur', headerName: 'Umur', width: 90, align: 'center', headerAlign: 'center'},
-  {field: 'antrian', headerName: 'Antrian', width: 90, align: 'center', headerAlign: 'center'},
   {
+    field: 'kehadiran', 
+    headerName: 'Kehadiran', 
+    width: 160,
+    renderCell: (props) =>{ 
+      const {kehadiran, attendColor, statusBook} = props.row
+      if(kehadiran === '' && statusBook === 'Telah diterima'){
+        return(
+          <Stack direction='row' spacing={2} sx={{px: 1}}>
+            <IconButton sx={{border: '1px solid'}} color='primary'><HowToRegIcon /></IconButton>
+            <IconButton sx={{border: '1px solid'}} color='danger'><PersonOffIcon /></IconButton>
+          </Stack>          
+        )
+      }
+      return kehadiran !== '' && <Chip label={kehadiran} color={attendColor} sx={{color: `${attendColor}.text`}}/>
+    }
+  },{
     field: 'statusBook', 
     headerName: 'Status Book', 
     width: 160,
@@ -19,15 +36,7 @@ const columns =[
       const {statusBook, statusColor} = props.row
       return <Chip label={statusBook} color={statusColor} sx={{color: `${statusColor}.text`}}/>
     }
-  },{
-    field: 'kehadiran', 
-    headerName: 'Kehadiran', 
-    width: 160,
-    renderCell: (props) =>{ 
-      const {kehadiran, attendColor} = props.row
-      return kehadiran !== '' && <Chip label={kehadiran} color={attendColor} sx={{color: `${attendColor}.text`}}/>
-    }
-  },
+  },{field: 'antrian', headerName: 'Antrian', width: 90, align: 'center', headerAlign: 'center'},
 ]
 
 const rows =[
@@ -88,7 +97,7 @@ const rows =[
     antrian: 37,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Tidak hadir',
+    kehadiran: '',
     attendColor: 'softDanger'
   },
   {
@@ -112,7 +121,7 @@ const rows =[
     antrian: 42,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Hadir',
+    kehadiran: '',
     attendColor: 'softSuccess'
   },
   {
@@ -124,7 +133,7 @@ const rows =[
     antrian: 43,
     statusBook: 'Telah diterima',
     statusColor: 'softSuccess',
-    kehadiran: 'Hadir',
+    kehadiran: '',
     attendColor: 'softSuccess'
   },
   {
@@ -145,9 +154,9 @@ const rows =[
     nama: 'Jonathan Busquets',
     email: 'jo.busquets@gmail.com',
     umur: 21,
-    antrian: '',
-    statusBook: 'Telah ditolak',
-    statusColor: 'softDanger',
+    antrian: 56,
+    statusBook: 'Telah diterima',
+    statusColor: 'softSuccess',
     kehadiran: '',
     attendColor: ''
   },
@@ -216,6 +225,12 @@ const rows =[
 const SessionDetail = () => {
   const navigate = useNavigate()
   const [pageSize, setPageSize] = useState(10)
+  const [SelectedRows, setSelectedRows] = useState([])
+
+  const handleSelect = (selectedRow) =>{
+    console.log(selectedRow)
+    setSelectedRows(selectedRow);
+  }
 
   return (
     <Stack
@@ -239,16 +254,49 @@ const SessionDetail = () => {
       sx={{
         width: '100%',
         maxWidth: 1090,
+        position: 'relative',
+        py: 6
         // '& .MuiDataGrid-row:hover': {
         //   cursor: 'pointer',
         //   color: 'primary.main',
         // },
       }}
       >
+        {SelectedRows.length > 0 && 
+        <Stack
+          direction={'row'}
+          spacing={1}
+          sx={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            py: 2
+          }}
+        >
+          {/* <Button variant='outlined' >
+            <CheckIcon />
+            Terima Semua
+          </Button>
+          <Button variant='outlined' color='danger' >
+            <CloseIcon />
+            Tolak Semua
+          </Button> */}
+          <Button variant='outlined' >
+            <HowToRegIcon />
+            Hadir Semua
+          </Button>
+          <Button variant='outlined' color='danger' >
+            <PersonOffIcon />
+            Tidak Hadir Semua
+          </Button>
+        </Stack>}
         <DataGrid 
           autoHeight
+          checkboxSelection
           columns={columns}
           rows={rows}
+          isRowSelectable={({row}) => row.kehadiran === '' && row.statusBook === 'Telah diterima'}
+          onSelectionModelChange={handleSelect}
           pageSize={pageSize}
           rowsPerPageOptions={[10, 25, 50, 100]}
           onPageSizeChange={(val) => setPageSize(val)}
