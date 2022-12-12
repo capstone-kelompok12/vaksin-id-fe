@@ -6,8 +6,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import PersonOffIcon from '@mui/icons-material/PersonOff';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const columns =[
   {field: 'nik', headerName: 'NIK', width: 200},
@@ -20,47 +18,56 @@ const columns =[
     width: 160,
     renderCell: (props) =>{ 
       const {statusBook, statusColor} = props.row
+      if(statusBook === 'Menunggu'){
+        return(
+          <Stack direction='row' spacing={2} sx={{px: 1}}>
+            <IconButton sx={{border: '1px solid'}} color='primary'><CheckIcon /></IconButton>
+            <IconButton sx={{border: '1px solid'}} color='danger'><CloseIcon /></IconButton>
+          </Stack>
+        )
+      }
       return <Chip label={statusBook} color={statusColor} sx={{color: `${statusColor}.text`}}/>
     }
   },
   {field: 'antrian', headerName: 'Antrian', width: 90, align: 'center', headerAlign: 'center'},
-  {
-    field: 'confirmation',
-    headerName: 'Terima Book',
-    width: 130,
-    align: 'center',
-    headerAlign: 'center',
-    renderCell: (props) =>{
-      const {antrian} = props.row
-      return(
-        <Stack direction='row' spacing={1}>
-          <IconButton sx={{border: '1px solid'}} color='primary' disabled={antrian !== ''}><CheckIcon /></IconButton>
-          <IconButton sx={{border: '1px solid'}} color='danger' disabled={antrian !== ''}><CloseIcon /></IconButton>
-        </Stack>
-      )
-    }
-  },{
-    field: 'kehadiran', 
-    headerName: 'Kehadiran', 
-    width: 130,
-    align: 'center',
-    headerAlign: 'center',
-    renderCell: (props) =>{ 
-      const {antrian} = props.row
-      return (
-        <Stack direction='row' spacing={1}>
-          <IconButton sx={{border: '1px solid'}} color='primary' disabled={antrian === ''}><HowToRegIcon /></IconButton>
-          <IconButton sx={{border: '1px solid'}} color='danger' disabled={antrian === ''}><PersonOffIcon /></IconButton>
-        </Stack>
-      )
-    }
-  },
+  // {
+  //   field: 'confirmation',
+  //   headerName: 'Terima Book',
+  //   width: 130,
+  //   align: 'center',
+  //   headerAlign: 'center',
+  //   renderCell: (props) =>{
+  //     const {antrian} = props.row
+  //     return(
+  //       <Stack direction='row' spacing={1}>
+  //         <IconButton sx={{border: '1px solid'}} color='primary' disabled={antrian !== ''}><CheckIcon /></IconButton>
+  //         <IconButton sx={{border: '1px solid'}} color='danger' disabled={antrian !== ''}><CloseIcon /></IconButton>
+  //       </Stack>
+  //     )
+  //   }
+  // },
+  // {
+  //   field: 'kehadiran', 
+  //   headerName: 'Kehadiran', 
+  //   width: 130,
+  //   align: 'center',
+  //   headerAlign: 'center',
+  //   renderCell: (props) =>{ 
+  //     const {antrian} = props.row
+  //     return (
+  //       <Stack direction='row' spacing={1}>
+  //         <IconButton sx={{border: '1px solid'}} color='primary' disabled={antrian === ''}><HowToRegIcon /></IconButton>
+  //         <IconButton sx={{border: '1px solid'}} color='danger' disabled={antrian === ''}><PersonOffIcon /></IconButton>
+  //       </Stack>
+  //     )
+  //   }
+  // },
   
 ]
 
 const rows =[
   {
-    id: 1,
+    id: 'lorem',
     nik: '33016120920031',
     nama: 'Jonathan Busquets',
     email: 'jo.busquets@gmail.com',
@@ -70,7 +77,7 @@ const rows =[
     statusColor: 'softSuccess',
   },
   {
-    id: 2,
+    id: 'ipsum',
     nik: '33016120920031',
     nama: 'Jonathan Busquets',
     email: 'jo.busquets@gmail.com',
@@ -80,7 +87,7 @@ const rows =[
     statusColor: 'softSuccess',
   },
   {
-    id: 3,
+    id: 'dolor',
     nik: '33016120920031',
     nama: 'Jonathan Busquets',
     email: 'jo.busquets@gmail.com',
@@ -90,7 +97,7 @@ const rows =[
     statusColor: 'softSuccess',
   },
   {
-    id: 4,
+    id: 'sit',
     nik: '33016120920031',
     nama: 'Jonathan Busquets',
     email: 'jo.busquets@gmail.com',
@@ -100,7 +107,7 @@ const rows =[
     statusColor: 'softSuccess',
   },
   {
-    id: 5,
+    id: 'amet',
     nik: '33016120920031',
     nama: 'Jonathan Busquets',
     email: 'jo.busquets@gmail.com',
@@ -110,7 +117,7 @@ const rows =[
     statusColor: 'softSuccess',
   },
   {
-    id: 6,
+    id: 'consitectur',
     nik: '33016120920031',
     nama: 'Jonathan Busquets',
     email: 'jo.busquets@gmail.com',
@@ -217,6 +224,7 @@ const BookDetail = () => {
   const [SelectedRows, setSelectedRows] = useState([])
 
   const handleSelect = (selectedRow) =>{
+    console.log(selectedRow)
     setSelectedRows(selectedRow);
   }
 
@@ -269,18 +277,20 @@ const BookDetail = () => {
             <CloseIcon />
             Tolak Semua
           </Button>
-          <Button variant='outlined' >
+          {/* <Button variant='outlined' >
             <HowToRegIcon />
             Hadir Semua
           </Button>
           <Button variant='outlined' color='danger' >
             <PersonOffIcon />
             Tidak Hadir Semua
-          </Button>
+          </Button> */}
         </Stack>}
         <DataGrid 
           autoHeight
           checkboxSelection
+          disableSelectionOnClick
+          isRowSelectable={({row}) => row.antrian === ''}
           onSelectionModelChange={handleSelect}
           columns={columns}
           rows={rows}
