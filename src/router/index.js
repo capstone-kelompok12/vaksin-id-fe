@@ -29,8 +29,8 @@ const SetupRouter = () => {
         <Route path='/' element={<ProtectedRoute />}>
           <Route index element={<Landing/>}/>
           <Route path='/login' element={<LoginPage/>}/>
-          <Route path='/notfound' element={<NotFound/>}/>
         </Route>
+        <Route path='/notfound' element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
   )
