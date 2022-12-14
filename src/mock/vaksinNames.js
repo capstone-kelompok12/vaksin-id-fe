@@ -6,6 +6,6 @@ export const vaksinNames = [
   {name: 'Sinopharm'},
   {name: 'Convidencia'},
   {name: 'Pfizer'},
-  {name: 'Astrazeneca'},
+  {name: 'AstraZeneca'},
   {name: 'Janssen'},
 ]

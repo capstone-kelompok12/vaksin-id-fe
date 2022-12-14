@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField} from '@mui/material'
 import AddIcon from "@mui/icons-material/Add";
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { addVaksin } from '../store/features/vaksin/vaksinSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addVaksin, updateStock } from '../store/features/vaksin/vaksinSlice';
 import { vaksinNames } from '../mock/vaksinNames';
 
 const INITIAL_FORM_DATA = {
@@ -28,42 +27,50 @@ const MenuProps = {
 const ModalAddEditStock = ({data, edit}) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const {name, dose, stock} = formData
   const dispatch = useDispatch()
+  const vaksinList = useSelector(state => state.vaksin.data)
 
-  const handleOpen = () => setOpen(true);
+  const isExist = vaksinList.filter(val => val.Name === formData.name)
+  const disabled = Boolean(
+    name === '' || 
+    dose === 0 || 
+    stock === 0 || 
+    // eslint-disable-next-line eqeqeq
+    formData.stock == data.stock
+  )
+  
+  const handleOpen = () => {
+    if(edit){
+      setFormData(data)
+    }
+    setOpen(true)
+  }
   const handleClose = () => setOpen(false);
 
   const handleChange = (e) =>{
     const {name, value} = e.target
-    if(name === 'stock'){
-      setFormData({
-        ...formData,
-        [name]: Number(value)
-      })  
-    }else{
-      setFormData({
-        ...formData,
-        [name]: value
-      })
-    }
+    setFormData({
+      ...formData,
+      [name]: value
+    })
   }
 
   const handleSubmit = (data) =>{
     delete data.id
+    data.stock = Number(data.stock)
+
     dispatch(addVaksin(data))
     setOpen(false)
+    setFormData(INITIAL_FORM_DATA)
   }
 
-  const {name, dose, stock} = formData
-
-  useEffect(() =>{
-    if(data){
-      setFormData(data)
-    }
-    return () =>{
-      setFormData(INITIAL_FORM_DATA)
-    }
-  }, [data])
+  const handleEdit = (data) =>{
+    data.stock = Number(data.stock)
+    dispatch(updateStock(data))
+    setOpen(false)
+    setFormData(INITIAL_FORM_DATA)
+  }
 
   return (
     <>
@@ -97,7 +104,7 @@ const ModalAddEditStock = ({data, edit}) => {
               <InputLabel id='label-vaksin'>Vaksin</InputLabel>
               <Select
                 label='Vaksin'
-                // labelId='label-vaksin'
+                disabled={edit}
                 id='select-vaksin'
                 name='name'
                 value={name}
@@ -115,15 +122,30 @@ const ModalAddEditStock = ({data, edit}) => {
               <InputLabel id='label-dose'>Dosis</InputLabel>
               <Select
                 label='Vaksin'
-                // labelId='label-dose'
+                disabled={edit}
                 id='select-dose'
                 name='dose'
                 value={dose}
                 onChange={handleChange}
               >
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
+                <MenuItem 
+                  value={1}
+                  disabled={isExist.some(e => e.Dose === 1)}
+                >
+                  1
+                </MenuItem>
+                <MenuItem 
+                  value={2}
+                  disabled={isExist.some(e => e.Dose === 2)}
+                >
+                  2
+                </MenuItem>
+                <MenuItem 
+                  value={3}
+                  disabled={isExist.some(e => e.Dose === 3)}
+                >
+                  3
+                </MenuItem>
               </Select>
             </FormControl>
             <TextField 
@@ -141,9 +163,10 @@ const ModalAddEditStock = ({data, edit}) => {
           <Button variant='outlined' onClick={() => setOpen(false)}>Batal</Button>
           <Button 
             variant='contained' 
+            disabled={disabled}
             onClick={() => {
               edit
-              ? console.log('edit mode')
+              ? handleEdit(formData)
               : handleSubmit(formData)
             }}
           >

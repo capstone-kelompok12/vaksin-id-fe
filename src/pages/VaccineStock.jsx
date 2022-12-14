@@ -8,6 +8,7 @@ import ModalDeleteVaksin from "../components/ModalDeleteVaksin";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { getVaksinList } from "../store/features/vaksin/vaksinSlice";
+import formatNumber from '../utils/formatNumber'
 
 const columns = [
   {field: 'num', headerName: 'No.', width: 120, align: 'center', headerAlign: 'center'},
@@ -21,7 +22,7 @@ const columns = [
     headerAlign: 'center',
     renderCell: (props) =>{
       const {stock} = props.row
-      return `${stock} dosis`
+      return `${formatNumber(stock)} dosis`
     }
   },
   {
