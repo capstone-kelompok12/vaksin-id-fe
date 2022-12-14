@@ -37,6 +37,15 @@ export const updateStock = createAsyncThunk('update/vaksin', async(data) =>{
   }
 })
 
+export const deleteVaksin = createAsyncThunk('delete/vaksin', async(id) =>{
+  try{
+    const res = await APIVaksin.deleteVaksin(id)
+    return {res, id}
+  }catch(err){
+    throw err
+  }
+})
+
 export const vaksinSlice = createSlice({
   name: 'vaksin',
   initialState,
@@ -86,6 +95,21 @@ export const vaksinSlice = createSlice({
       state.loading = false
       state.error = true
       toast.error('Gagal mengubah stok vaksin!')
+    })
+    builder.addCase(deleteVaksin.pending, (state) =>{
+      state.loading = true
+      state.error = false
+    })
+    builder.addCase(deleteVaksin.fulfilled, (state, {payload}) =>{
+      state.loading = false
+      state.error = false
+      state.data = state.data.filter(val => val.ID !== payload.id)
+      toast.success('Berhasil menghapus vaksin!')
+    })
+    builder.addCase(deleteVaksin.rejected, (state, action) =>{
+      state.loading = false
+      state.error = true
+      toast.error('Gagal menghapus vaksin!')
     })
   }
 })

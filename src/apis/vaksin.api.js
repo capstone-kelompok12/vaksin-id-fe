@@ -31,6 +31,14 @@ const APIVaksin = {
     }catch(err){
       throw err
     }
+  },
+  async deleteVaksin(id){
+    try{
+      const res = await axiosInstance.delete(`/admin/vaccines/${id}`,{headers})
+      return res
+    }catch(err){
+      throw err
+    }
   }
 }
 

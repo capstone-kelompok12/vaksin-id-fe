@@ -2,11 +2,19 @@ import React, { useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Typography } from '@mui/material'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import { useDispatch } from 'react-redux';
+import { deleteVaksin } from '../store/features/vaksin/vaksinSlice';
 
-const ModalDeleteVaksin = () => {
+const ModalDeleteVaksin = ({id}) => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const dispatch = useDispatch()
+
+  const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false);
+  const handleSubmit = () =>{
+    dispatch(deleteVaksin(id))
+    setOpen(false)
+  }
 
   return (
     <>
@@ -35,7 +43,7 @@ const ModalDeleteVaksin = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Batal</Button>
-          <Button onClick={handleClose} color='danger'>Hapus</Button>
+          <Button onClick={() => handleSubmit()} color='danger'>Hapus</Button>
         </DialogActions>
       </Dialog>
     </>

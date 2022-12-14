@@ -35,7 +35,7 @@ const columns = [
       const {id, name, dose, stock} = props.row
       return(
         <Stack direction='row' spacing={1}>
-          <ModalDeleteVaksin />
+          <ModalDeleteVaksin id={id}/>
           <ModalAddEditStock edit={true} data={{id, name, dose, stock}} />
         </Stack>
       )
