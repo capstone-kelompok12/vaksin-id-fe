@@ -1,0 +1,37 @@
+.dots {
+  width: 13.4px;
+  height: 13.4px;
+  position: absolute;
+  transform: translate(-450%, 0);
+  color: rgba(0,109,57,0.25);
+  border-radius: 50%;
+  box-shadow: 44.8px 0, 22.4px 0, 67.6px 0, 90.1px 0, 112.5px 0;
+  animation: dots-u8fzftmd 2s infinite linear reverse;
+}
+
+@keyframes dots-u8fzftmd {
+  10% {
+    box-shadow: 44.8px 0, 22.4px 0, 67.6px 0, 90.1px 0, 112.5px -10px #006d39;
+    background: '';
+  }
+
+  30% {
+    box-shadow: 44.8px 0, 22.4px 0, 67.6px 0, 90.1px -10px #006d39, 112.5px 0;
+    background: '';
+  }
+
+  50% {
+    box-shadow: 44.8px 0, 22.4px 0, 67.6px -10px #006d39, 90.1px 0, 112.5px 0;
+    background: '';
+  }
+
+  70% {
+    box-shadow: 44.8px -10px #006d39, 22.4px 0, 67.6px 0, 90.1px 0, 112.5px 0;
+    background: '';
+  }
+
+  90% {
+    box-shadow: 44.8px 0, 22.4px -10px #006d39, 67.6px 0, 90.1px 0, 112.5px 0;
+    background: '';
+  }
+}

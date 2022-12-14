@@ -3,30 +3,58 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
 import AddIcon from "@mui/icons-material/Add";
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { addVaksin } from '../store/features/vaksin/vaksinSlice';
+import { vaksinNames } from '../mock/vaksinNames';
 
 const INITIAL_FORM_DATA = {
   id: '',
-  nama: '',
-  dosis: '',
-  stok: 0
+  name: '',
+  dose: '',
+  stock: 0
 }
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const ModalAddEditStock = ({data, edit}) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const dispatch = useDispatch()
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleChange = (e) =>{
     const {name, value} = e.target
-    setFormData({
-      ...formData,
-      [name]: value
-    })
+    if(name === 'stock'){
+      setFormData({
+        ...formData,
+        [name]: Number(value)
+      })  
+    }else{
+      setFormData({
+        ...formData,
+        [name]: value
+      })
+    }
   }
 
-  const {nama, dosis, stok} = formData
+  const handleSubmit = (data) =>{
+    delete data.id
+    dispatch(addVaksin(data))
+    setOpen(false)
+  }
+
+  const {name, dose, stock} = formData
 
   useEffect(() =>{
     if(data){
@@ -36,7 +64,7 @@ const ModalAddEditStock = ({data, edit}) => {
       setFormData(INITIAL_FORM_DATA)
     }
   }, [data])
-  
+
   return (
     <>
       {edit
@@ -71,33 +99,31 @@ const ModalAddEditStock = ({data, edit}) => {
                 label='Vaksin'
                 // labelId='label-vaksin'
                 id='select-vaksin'
-                name='nama'
-                value={nama}
+                name='name'
+                value={name}
                 onChange={handleChange}
+                MenuProps={MenuProps}
               >
-                <MenuItem value='AstraZeneca'>AstraZeneca</MenuItem>
-                <MenuItem value='Novavax'>Novavax</MenuItem>
-                <MenuItem value='Sinovac'>Sinovac</MenuItem>
-                <MenuItem value='Moderna'>Moderna</MenuItem>
-                <MenuItem value='Janssen'>Janssen</MenuItem>
-                <MenuItem value='Pfizer'>Pfizer</MenuItem>
-                <MenuItem value='Sputnik'>Sputnik</MenuItem>
-                <MenuItem value='Sinopharm'>Sinopharm</MenuItem>
+                {vaksinNames.map(({name}, idx) =>{
+                  return(
+                    <MenuItem key={idx} value={name}>{name}</MenuItem>    
+                  )
+                })}
               </Select>
             </FormControl>
             <FormControl fullWidth>
-              <InputLabel id='label-dosis'>Dosis</InputLabel>
+              <InputLabel id='label-dose'>Dosis</InputLabel>
               <Select
                 label='Vaksin'
-                // labelId='label-dosis'
-                id='select-dosis'
-                name='dosis'
-                value={dosis}
+                // labelId='label-dose'
+                id='select-dose'
+                name='dose'
+                value={dose}
                 onChange={handleChange}
               >
-                <MenuItem value='Pertama'>Pertama</MenuItem>
-                <MenuItem value='Kedua'>Kedua</MenuItem>
-                <MenuItem value='Ketiga'>Ketiga</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
               </Select>
             </FormControl>
             <TextField 
@@ -105,15 +131,24 @@ const ModalAddEditStock = ({data, edit}) => {
               id='input-stok'
               label='Stok Vaksin'
               type={'number'}
-              name='stok'
-              value={stok}
+              name='stock'
+              value={stock}
               onChange={handleChange}
             />
           </Stack>
         </DialogContent>
         <DialogActions sx={{p: 3}}>
-          <Button variant='outlined'>Batal</Button>
-          <Button variant='contained'>{edit ? 'Simpan' : 'Tambah'}</Button>
+          <Button variant='outlined' onClick={() => setOpen(false)}>Batal</Button>
+          <Button 
+            variant='contained' 
+            onClick={() => {
+              edit
+              ? console.log('edit mode')
+              : handleSubmit(formData)
+            }}
+          >
+            {edit ? 'Simpan' : 'Tambah'}
+          </Button>
         </DialogActions>
       </Dialog>
     </>

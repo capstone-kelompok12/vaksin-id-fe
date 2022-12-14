@@ -84,45 +84,29 @@ const LoginForm = () => {
       setLoading(true)
 
       APIAuth.login(formData)
-        .then(({data, response}) =>{
-          // const {Token} = res?.data
-          // const {error, message} = res?.response.data
+        .then(({data}) =>{
           setLoading(false)
-          // console.log(error);
-          if(response){
-            const {message} = response.data
-            if(message === 'wrong password'){
-              setError({
-                ...error,
-                password: 'Password salah'
-              })
-            }else{
-              setError({
-                ...error,
-                email: 'Email tidak terdaftar'
-              })
-            }
-            // console.log({error, message});
-          }else{
-            Auth.storeToken(data.Token, navigate)
-            // console.log(data)
-            // console.log(Token)
-            setError(INITIAL_ERROR)
-          }
+          Auth.storeToken(data.Token, navigate)
+          setError(INITIAL_ERROR)
         })
         .catch(err => {
           setLoading(false)
-          // const {data, error, message} = err
-          // setError({
-          //   email: message,
-          //   password: message
-          // })
-          throw new Error(err)
-          // console.log(err)
+          const {message} = err.response.data
+            
+          if(message === 'wrong password'){
+            setError({
+              ...error,
+              password: 'Password salah'
+            })
+          }
+          if(message === 'record not found'){
+            setError({
+              ...error,
+              email: 'Email tidak terdaftar'
+            })
+          }
         })
     }
-    // Auth.login()
-    // navigate('/dashboard')
   }
 
   const handleMouseDownPassword = (event) => {
