@@ -23,6 +23,7 @@
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "react-slideshow-image": "^4.0.5",
+    "react-toastify": "^9.1.1",
     "tss-react": "^4.4.4",
     "web-vitals": "^2.1.4"
   },

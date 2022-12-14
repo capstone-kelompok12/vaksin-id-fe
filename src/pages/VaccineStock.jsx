@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import 
   { Box, 
     Stack,
@@ -6,20 +6,23 @@ import
 import ModalAddEditStock from "../components/ModalAddEditStock";
 import ModalDeleteVaksin from "../components/ModalDeleteVaksin";
 import { DataGrid } from "@mui/x-data-grid";
+import { useDispatch, useSelector } from "react-redux";
+import { getVaksinList } from "../store/features/vaksin/vaksinSlice";
+import formatNumber from '../utils/formatNumber'
 
 const columns = [
   {field: 'num', headerName: 'No.', width: 120, align: 'center', headerAlign: 'center'},
-  {field: 'nama', headerName: 'Nama Vaksin', width: 220, align: 'center', headerAlign: 'center'},
-  {field: 'dosis', headerName: 'Dosis', width: 200, align: 'center', headerAlign: 'center'},
+  {field: 'name', headerName: 'Nama Vaksin', width: 220, align: 'center', headerAlign: 'center'},
+  {field: 'dose', headerName: 'Dosis', width: 200, align: 'center', headerAlign: 'center'},
   {
-    field: 'stok', 
+    field: 'stock', 
     headerName: 'Stok Vaksin', 
     width: 220,
     align: 'center', 
     headerAlign: 'center',
     renderCell: (props) =>{
-      const {stok} = props.row
-      return `${stok} dosis`
+      const {stock} = props.row
+      return `${formatNumber(stock)} dosis`
     }
   },
   {
@@ -29,57 +32,36 @@ const columns = [
     align: 'center', 
     headerAlign: 'center',
     renderCell: (props) =>{
-      const {id, nama, dosis, stok} = props.row
+      const {id, name, dose, stock} = props.row
       return(
         <Stack direction='row' spacing={1}>
-          <ModalDeleteVaksin />
-          <ModalAddEditStock edit={true} data={{id, nama, dosis, stok}} />
+          <ModalDeleteVaksin id={id}/>
+          <ModalAddEditStock edit={true} data={{id, name, dose, stock}} />
         </Stack>
       )
     }
   },
 ]
 
-const rows = [
-  {
-    id: 1,
-    num: 1,
-    nama: 'Sinovac',
-    dosis: 'Pertama',
-    stok: 120
-  },
-  {
-    id: 2,
-    num: 2,
-    nama: 'AstraZeneca',
-    dosis: 'Pertama',
-    stok: 46
-  },
-  {
-    id: 3,
-    num: 3,
-    nama: 'Pfizer',
-    dosis: 'Pertama',
-    stok: 92
-  },
-  {
-    id: 4,
-    num: 4,
-    nama: 'Janssen',
-    dosis: 'Pertama',
-    stok: 102
-  },
-  {
-    id: 5,
-    num: 5,
-    nama: 'Moderna',
-    dosis: 'Pertama',
-    stok: 200
-  },
-];
-
 const VaccineStock = () => {
   const [pageSize, setPageSize] = useState(10)
+  const dispatch = useDispatch()
+  const {loading, data: vaksinList} = useSelector(state => state.vaksin)
+  
+  const rows = vaksinList.map((item, idx) =>{
+    const {ID: id, Name: name, Dose: dose, Stock: stock} = item
+    return {
+      id,
+      num: idx + 1,
+      name,
+      dose,
+      stock
+    }
+  })
+
+  useEffect(() =>{
+    dispatch(getVaksinList())
+  },[dispatch])
 
   return (
     <>
@@ -111,6 +93,7 @@ const VaccineStock = () => {
         >
           <DataGrid 
             autoHeight
+            loading={loading}
             columns={columns}
             rows={rows}
             pageSize={pageSize}
