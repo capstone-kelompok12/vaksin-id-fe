@@ -1,23 +1,29 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-// import { Container } from "@mui/system";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import UserAvatar from "./UserAvatar";
+
+/**
+ * 
+ * @param {String} pathname pathname variables returned from useLocation hooks
+ * @returns string
+ */
+export const getHeading = (pathname) =>{
+  const location = pathname.split('/')
+
+  if(location.length > 2) {
+    const [ ,name] = location[1].split('-')
+    const heading = `detail ${name}`.toUpperCase()
+    return heading;
+  }
+  return location[1].replaceAll("-", " ").toUpperCase();
+}
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const heading = pathname.slice(1).replaceAll("-", " ").toUpperCase();
   const [scrolled, setScrolled] = useState(false);
-  
-  const getHeading = () =>{
-    const location = pathname.split('/')
-    if(location.length > 2) {
-      const heading = `${location[1].replaceAll("-", " ")} detail`.toUpperCase()
-      return heading;
-    }
-    return location[1].replaceAll("-", " ").toUpperCase();
-  }
 
   const addShadow = () => {
     if (window.scrollY > 10) {
@@ -58,7 +64,7 @@ const Navbar = () => {
           <MenuRoundedIcon fontSize="inherit" />
         </IconButton> */}
         <Typography variant="h5">
-          {heading !== "" ? getHeading() : "DASHBOARD"}
+          {heading !== "" ? getHeading(pathname) : "DASHBOARD"}
         </Typography>
       </Stack>
 

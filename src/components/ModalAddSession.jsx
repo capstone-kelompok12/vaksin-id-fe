@@ -2,35 +2,123 @@ import React, { useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from '@mui/material'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AddIcon from "@mui/icons-material/Add";
-import { hideScroller, modalStyle } from '../styles/customStyle';
+import { hideScroller } from '../styles/customStyle';
 import moment from 'moment'
+import { vaksinNames } from '../mock/vaksinNames';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getVaksinList } from '../store/features/vaksin/vaksinSlice';
+import { addSession } from '../store/features/session/sessionSlice';
 
 const INITIAL_FORM_DATA = {
-  namaSesi: '',
-  jenisVaksin: '',
-  tanggal: moment(),
-  // .format('DD/MM/YYYY'),
-  waktu: '',
-  dosis: '',
-  kapasitas: 0
+  id_vaccine: '',
+  session_name: '',
+  vaccine_name: '',
+  date: moment(),
+  time: '',
+  start: '',
+  end: '',
+  dose: '',
+  capacity: 0
 }
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const ModalAddSession = () => {
   const [open, setOpen] = useState(false)
   const [formData, setFormData] = useState(INITIAL_FORM_DATA)
+  const [maxCapacity, setMaxCapacity] = useState(0)
+  const vaksinData = useSelector(state => state.vaksin.data)
+  const dispatch = useDispatch()
 
+  const vaksinAvailability = (name) =>{
+    return vaksinData.some(val => val.Name === name)
+  }
+
+  const doseAvailability = (dose) =>{
+    return vaksinData.some(({Name, Dose}) => Name === formData.vaccine_name && Dose === dose)
+  }
+
+  const isValid = () =>{
+    const {namaVaksin, vaccine_name, date, time, dose, capacity} = formData
+    return Boolean(
+      namaVaksin === '' ||
+      vaccine_name === '' ||
+      date === moment() ||
+      time === '' ||
+      dose === 0 ||
+      // eslint-disable-next-line eqeqeq
+      capacity == 0
+    )    
+  }
+  
   const handleChange = (e) =>{
     const {name, value} = e.target
-
-    setFormData({...formData, [name]: value})
+    if(name === 'vaccine_name'){
+      setFormData({
+        ...formData, 
+        [name]: value,
+        dose: ''
+      })  
+    }else{
+      setFormData({...formData, [name]: value})
+    }
   }
 
   const handlePickDate = (e) =>{
     const selectedDate = moment(e)
     // .format('DD/MM/YYYY')
     // console.log(selectedDate)
-    setFormData({...formData, tanggal: selectedDate})
+    setFormData({...formData, date: selectedDate})
   }
+
+  const handleSubmit = () =>{
+    const [start, , end] = formData.time.split(' ')
+    const willBeDeleted = ['dose', 'time', 'vaccine_name']
+    willBeDeleted.forEach(val => delete formData[val])
+
+    dispatch(addSession({
+      ...formData, 
+      date: moment(formData.date).format('YYYY-MM-DD'),
+      capacity: Number(formData.capacity),
+      start,
+      end
+    }))
+    setOpen(false)
+    setFormData(INITIAL_FORM_DATA)
+  }
+
+  useEffect(() =>{
+    dispatch(getVaksinList())
+  },[dispatch])
+
+  useEffect(() => {
+    const { vaccine_name, dose} = formData
+    if(vaccine_name && dose){
+      const [selectedVaccine] = vaksinData.filter(({Name, Dose}) => Name === vaccine_name && Dose === dose)
+      setFormData({
+        ...formData,
+        id_vaccine: selectedVaccine.ID
+      })
+    }
+
+    vaksinData.map(({Name, Dose, Stock}) =>{
+      const {vaccine_name, dose} = formData
+      if(Name === vaccine_name && Dose === dose){ 
+        setMaxCapacity(Stock)
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.vaccine_name, formData.dose, vaksinData])
 
   return (
     <>
@@ -45,8 +133,9 @@ const ModalAddSession = () => {
 
       <Dialog
         open={open}
+        maxWidth='xs'
+        fullWidth
         onClose={() => setOpen(false)}
-        // sx={{zIndex: 9999}}
       >
         <DialogTitle align='center'>Tambah Sesi</DialogTitle>
         <DialogContent
@@ -54,27 +143,21 @@ const ModalAddSession = () => {
             ...hideScroller,
           }}
         >
-          <Stack 
-            sx={{
-              ...modalStyle,
-              ...hideScroller,
-            }}
-          >
+          <Stack>
             <FormControl fullWidth>
-              <Stack spacing={2}>
+              <Stack spacing={2} sx={{mt: 1}}>
                 <TextField 
-                  error={formData.namaSesi === ''}
-                  name='namaSesi' 
+                  name='session_name' 
                   label='Nama Sesi' 
-                  value={formData.namaSesi} 
+                  value={formData.session_name} 
                   onChange={handleChange} 
                 />
                 <DesktopDatePicker
                   label='Tanggal'
                   disablePast
-                  name='tanggal'
+                  name='date'
                   inputFormat='DD/MM/YYYY'
-                  value={formData.tanggal}
+                  value={formData.date}
                   onChange={(e) => handlePickDate(e)}
                   renderInput={(params) => <TextField {...params} />}
                 />
@@ -84,26 +167,33 @@ const ModalAddSession = () => {
                     id="dropdown-jenis-vaksin"
                     labelId='dropdown-jenis-vaksin-label'
                     label='Jenis Vaksin'
-                    name='jenisVaksin'
-                    value={formData.jenisVaksin}
+                    name='vaccine_name'
+                    value={formData.vaccine_name}
                     onChange={handleChange}
+                    MenuProps={MenuProps}
                   >
-                    <MenuItem value='AstraZeneca'>AstraZeneca</MenuItem>
-                    <MenuItem value='Sinovac'>Sinovac</MenuItem>
-                    <MenuItem value='Moderna'>Moderna</MenuItem>
-                    <MenuItem value='Pfizer'>Pfizer</MenuItem>
-                    <MenuItem value='Sputnik'>Sputnik</MenuItem>
+                    {vaksinNames.map(({name}, idx) =>{
+                      return(
+                        <MenuItem 
+                          key={idx} 
+                          value={name}
+                          disabled={!vaksinAvailability(name)}
+                        >
+                          {name}
+                        </MenuItem>    
+                      )
+                    })}
                   </Select>
                 </FormControl>
                 
                 <FormControl>
-                  <InputLabel id='dropdown-waktu-vaksin-label'>Waktu</InputLabel>
+                  <InputLabel id='dropdown-time-vaksin-label'>Waktu</InputLabel>
                   <Select
-                    id="dropdown-waktu-vaksin"
-                    labelId='dropdown-waktu-vaksin-label'
+                    id="dropdown-time-vaksin"
+                    labelId='dropdown-time-vaksin-label'
                     label='Waktu'
-                    name='waktu'
-                    value={formData.waktu}
+                    name='time'
+                    value={formData.time}
                     onChange={handleChange}
                   >
                     <MenuItem value='08.00 - 11.00 WIB'>08.00 - 11.00 WIB</MenuItem>
@@ -111,27 +201,31 @@ const ModalAddSession = () => {
                   </Select>
                 </FormControl>
                 <FormControl>
-                  <InputLabel id='dropdown-dosis-vaksin-label'>Dosis</InputLabel>
+                  <InputLabel id='dropdown-dose-vaksin-label'>Dosis</InputLabel>
                   <Select
-                    id="dropdown-dosis-vaksin"
-                    labelId='dropdown-dosis-vaksin-label'
+                    id="dropdown-dose-vaksin"
+                    labelId='dropdown-dose-vaksin-label'
                     label='Dosis'
-                    name='dosis'
-                    value={formData.dosis}
+                    name='dose'
+                    value={formData.dose}
                     onChange={handleChange}
+                    disabled={formData.vaccine_name === ''}
                   >
-                    <MenuItem value='Pertama'>Pertama</MenuItem>
-                    <MenuItem value='Kedua'>Kedua</MenuItem>
-                    <MenuItem value='Ketiga'>Ketiga</MenuItem>
+                    {[1,2,3].map((val) =>{
+                      return(
+                        <MenuItem value={val} key={val} disabled={!doseAvailability(val)}>{val}</MenuItem>    
+                      )
+                    })}
                   </Select>
                 </FormControl>
                 <TextField 
-                  error={formData.kapasitas === 0}
-                  name='kapasitas' 
+                  error={formData.capacity > maxCapacity}
+                  name='capacity' 
                   label='Kapasitas' 
-                  value={formData.kapasitas} 
+                  value={formData.capacity} 
+                  type='number'
                   onChange={handleChange}
-                  helperText='Kapasitas maks. 500'
+                  helperText={maxCapacity > 0 && `Kapasitas maks. ${maxCapacity}`}
                 />
               </Stack>
             </FormControl>
@@ -139,45 +233,17 @@ const ModalAddSession = () => {
         </DialogContent>
         <DialogActions sx={{p: 4}}>
           <Button variant='outlined' onClick={() => setOpen(false)}>Batal</Button>
-          <Button variant='contained'>Tambah</Button>
+          <Button 
+            variant='contained' 
+            onClick={handleSubmit} 
+            disabled={isValid() || formData.capacity > maxCapacity}
+          >
+            Tambah
+          </Button>
         </DialogActions>
       </Dialog>
-      {/* <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        // sx={{zIndex: 9999}}
-      >
-        <Stack sx={{...modalStyle}}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Tambah Sesi
-          </Typography>
-          <FormControl fullWidth>
-            <Stack spacing={2}>
-              <TextField id='namaSesi' label='Nama Sesi' />
-              <InputLabel id='dropdown-jenis-vaksin-label'>Jenis Vaksin</InputLabel>
-              <Select
-                id="dropdown-jenis-vaksin"
-                labelId='dropdown-jenis-vaksin-label'
-                label='Jenis Vaksin'
-                placeholder='Jenis Vaksin'
-                value={formData.jenisVaksin}
-                onChange={(e) =>setFormData({...formData, jenisVaksin: e.target.value})}
-              >
-                <MenuItem value='AstraZeneca'>AstraZeneca</MenuItem>
-                <MenuItem value='Sinovac'>Sinovac</MenuItem>
-                <MenuItem value='Moderna'>Moderna</MenuItem>
-                <MenuItem value='Pfizer'>Pfizer</MenuItem>
-                <MenuItem value='Sputnik'>Sputnik</MenuItem>
-              </Select>
-              <TextField id='kapasitas' label='Kapasitas' />
-            </Stack>
-          </FormControl>
-        </Stack>
-      </Modal> */}
     </>
   )
 }
 
-export default ModalAddSession
+export default ModalAddSession;

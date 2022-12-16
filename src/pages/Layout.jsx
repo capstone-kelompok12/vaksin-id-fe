@@ -10,8 +10,9 @@ const Layout = () => {
   const {open} = useSelector(state => state.sidebar)
   const width = open ? '320px' : '90px'
   const {loading: vaksinLoading} = useSelector(state => state.vaksin)
+  const {loading: sessionLoading} = useSelector(state => state.session)
 
-  const showLoader = Boolean(vaksinLoading)
+  const showLoader = Boolean(vaksinLoading || sessionLoading)
 
   return (
     <Box

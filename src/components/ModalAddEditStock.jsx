@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField} from '@mui/material'
 import AddIcon from "@mui/icons-material/Add";
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import { useDispatch, useSelector } from 'react-redux';
-import { addVaksin, updateStock } from '../store/features/vaksin/vaksinSlice';
+import { addVaksin, getVaksinList, updateStock } from '../store/features/vaksin/vaksinSlice';
 import { vaksinNames } from '../mock/vaksinNames';
 
 const INITIAL_FORM_DATA = {
@@ -37,7 +37,7 @@ const ModalAddEditStock = ({data, edit}) => {
     dose === 0 || 
     stock === 0 || 
     // eslint-disable-next-line eqeqeq
-    formData.stock == data.stock
+    formData.stock == data?.stock
   )
   
   const handleOpen = () => {
@@ -71,6 +71,10 @@ const ModalAddEditStock = ({data, edit}) => {
     setOpen(false)
     setFormData(INITIAL_FORM_DATA)
   }
+
+  useEffect(() =>{
+    dispatch(getVaksinList())
+  },[dispatch])
 
   return (
     <>
@@ -122,7 +126,7 @@ const ModalAddEditStock = ({data, edit}) => {
               <InputLabel id='label-dose'>Dosis</InputLabel>
               <Select
                 label='Vaksin'
-                disabled={edit}
+                disabled={edit || name === ''}
                 id='select-dose'
                 name='dose'
                 value={dose}
