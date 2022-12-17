@@ -41,7 +41,7 @@ const theme = createTheme({
       light: '#FF9286',
       main: '#FF615e',
       dark: '#DB444E',
-      contrastText: 'rgba(0, 10, 10, 0.87)',
+      contrastText: 'rgba(255, 255, 255, 0.87)',
     },
     softDanger:{
       light: '#ffe1de',

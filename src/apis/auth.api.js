@@ -7,7 +7,8 @@ const APIAuth = {
       return res.data
     }catch(err){
       // throw new Error(err)
-      return err
+      throw err
+      // return err
     }
   }
 }

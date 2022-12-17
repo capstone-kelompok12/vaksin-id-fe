@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Breadcrumbs, Button, Chip, IconButton, Link, Stack, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SessionStats from '../components/SessionStats';
 import { DataGrid } from '@mui/x-data-grid';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSessionDetail } from '../store/features/session/sessionSlice';
 
 const columns =[
   {field: 'nik', headerName: 'NIK', width: 200},
@@ -65,168 +67,38 @@ const columns =[
   
 ]
 
-const rows =[
-  {
-    id: 'lorem',
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 27,
-    antrian: 32,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 'ipsum',
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 23,
-    antrian: 33,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 'dolor',
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 39,
-    antrian: 35,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 'sit',
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 24,
-    antrian: 36,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 'amet',
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 33,
-    antrian: 37,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 'consitectur',
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 31,
-    antrian: 40,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 7,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 29,
-    antrian: 42,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 8,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 18,
-    antrian: 43,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 9,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 43,
-    antrian: 44,
-    statusBook: 'Telah diterima',
-    statusColor: 'softSuccess',
-  },
-  {
-    id: 10,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 21,
-    antrian: '',
-    statusBook: 'Menunggu',
-    statusColor: 'softWarning',
-  },
-  {
-    id: 11,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 36,
-    antrian: '',
-    statusBook: 'Menunggu',
-    statusColor: 'softWarning',
-  },
-  {
-    id: 12,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 25,
-    antrian: '',
-    statusBook: 'Menunggu',
-    statusColor: 'softWarning',
-  },
-  {
-    id: 13,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 27,
-    antrian: '',
-    statusBook: 'Menunggu',
-    statusColor: 'softWarning',
-  },
-  {
-    id: 14,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 37,
-    antrian: '',
-    statusBook: 'Menunggu',
-    statusColor: 'softWarning',
-  },
-  {
-    id: 15,
-    nik: '33016120920031',
-    nama: 'Jonathan Busquets',
-    email: 'jo.busquets@gmail.com',
-    umur: 42,
-    antrian: '',
-    statusBook: 'Menunggu',
-    statusColor: 'softWarning',
-  },
-]
-
 const BookDetail = () => {
+  const {id} = useParams()
   const navigate = useNavigate()
   const [pageSize, setPageSize] = useState(10)
   const [SelectedRows, setSelectedRows] = useState([])
+  const dispatch = useDispatch()
+  const sessionDetail = useSelector(state => state.session.detail)
+
+  const {SessionName, Booking} = sessionDetail
+
+  const rows = Booking.map(val =>{
+    return(
+      {
+      id: 'lorem',
+      nik: '33016120920031',
+      nama: 'Jonathan Busquets',
+      email: 'jo.busquets@gmail.com',
+      umur: 27,
+      antrian: 32,
+      statusBook: 'Telah diterima',
+      statusColor: 'softSuccess',
+    }
+  )})
 
   const handleSelect = (selectedRow) =>{
     console.log(selectedRow)
     setSelectedRows(selectedRow);
   }
+  
+  useEffect(() =>{
+    dispatch(getSessionDetail(id))
+  },[dispatch, id])  
 
   return (
     <Stack
@@ -242,9 +114,9 @@ const BookDetail = () => {
         separator={<NavigateNextIcon />}
       >
         <Link color={'inherit'} underline='hover' sx={{cursor: 'pointer'}} onClick={() => navigate('/manage-booking')}>Manage Booking</Link>
-        <Typography>AstraZeneca-01</Typography>
+        <Typography>{SessionName}</Typography>
       </Breadcrumbs>
-      <SessionStats showStatus={false}/>
+      <SessionStats showStatus={false} data={sessionDetail}/>
       <Stack
         spacing={2}
         sx={{
