@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
 import APISession from "../../../apis/session.api"
+import getSessionStatus from "../../../utils/getSessionStatus"
 
 const INIT_SESSION_DETAIL = {
   Booking: [],
@@ -64,7 +65,11 @@ const sessionSlice = createSlice({
       })
       .addCase(getSessionList.fulfilled, (state, {payload}) =>{
         state.loading = false
-        state.data = payload
+        state.data = payload.map(val =>{
+          const {StartSession, EndSession, CapacityLeft, Date} = val
+          const {status, color} = getSessionStatus({StartSession, EndSession, CapacityLeft, Date})
+          return({...val, status, color})
+        })
         state.error = false
       })
       .addCase(getSessionList.rejected, (state) =>{
@@ -77,7 +82,9 @@ const sessionSlice = createSlice({
       })
       .addCase(getSessionDetail.fulfilled, (state, {payload}) =>{
         state.loading = false
-        state.detail = payload
+        const {StartSession, EndSession, CapacityLeft, Date} = payload
+        const {status, color} = getSessionStatus({StartSession, EndSession, CapacityLeft, Date})
+        state.detail = {...payload, status, color}
         state.error = false
       })
       .addCase(getSessionDetail.rejected, (state) =>{
@@ -91,7 +98,9 @@ const sessionSlice = createSlice({
       .addCase(addSession.fulfilled, (state, {payload}) =>{
         state.loading = false
         state.error = false
-        state.data.unshift(payload)
+        const {StartSession, EndSession, CapacityLeft, Date} = payload
+        const {status, color} = getSessionStatus({StartSession, EndSession, CapacityLeft, Date})
+        state.data.unshift({...payload, color, status})
         toast.success('Berhasil menambahkan session!')
       })
       .addCase(addSession.rejected, (state) =>{

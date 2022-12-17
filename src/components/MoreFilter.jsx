@@ -4,7 +4,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 // import CheckIcon from '@mui/icons-material/Check';
 
-const MoreFilter = () => {
+const MoreFilter = ({selectedFilter, setFilter}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -48,8 +48,16 @@ const MoreFilter = () => {
           horizontal: 'right',
         }}
       >
-        <FilterWaktu handleClose={handleClose} />
-        <FilterDosis handleClose={handleClose} />
+        <FilterWaktu 
+          handleClose={handleClose} 
+          selectedFilter={selectedFilter}
+          setFilter={setFilter}
+        />
+        <FilterDosis 
+          handleClose={handleClose} 
+          selectedFilter={selectedFilter}
+          setFilter={setFilter}
+        />
       </Menu>
     </>
   )
@@ -57,9 +65,9 @@ const MoreFilter = () => {
 
 export default MoreFilter;
 
-const FilterWaktu = ({handleClose}) =>{
+const FilterWaktu = ({handleClose, selectedFilter, setFilter}) =>{
+  const {waktu} = selectedFilter
   const [anchorEl, setAnchorEl] = useState(null)
-  // const [selectedFilter, setSelectedFilter] = ('')
   const open = Boolean(anchorEl)
   
   const handleClick = (event) => {
@@ -101,18 +109,20 @@ const FilterWaktu = ({handleClose}) =>{
           horizontal: 'right',
         }}        
       >
-        <MenuItem 
+        <MenuItem
+          selected={waktu === '08.00 - 11.00 WIB'} 
           onClick={() =>{
-            // setSelectedFilter('08.00 - 11.00 WIB')
+            setFilter('waktu', '08.00 - 11.00 WIB')
             setAnchorEl(null)
             handleClose()
           }}
         >
           08.00 - 11.00 WIB
         </MenuItem>
-        <MenuItem 
+        <MenuItem
+          selected={waktu === '13.00 - 16.00 WIB'} 
           onClick={() =>{
-            // setSelectedFilter('13.00 - 16.00 WIB')
+            setFilter('waktu', '13.00 - 16.00 WIB')
             setAnchorEl(null)
             handleClose()
           }}
@@ -124,7 +134,8 @@ const FilterWaktu = ({handleClose}) =>{
   )
 }
 
-const FilterDosis = ({handleClose}) =>{
+const FilterDosis = ({handleClose, selectedFilter, setFilter}) =>{
+  const {dosis} = selectedFilter
   const [anchorEl, setAnchorEl] = useState(null)
   // const [selectedFilter, setSelectedFilter] = useState('')
   const open = Boolean(anchorEl)
@@ -169,31 +180,34 @@ const FilterDosis = ({handleClose}) =>{
         }}        
       >
         <MenuItem 
+          selected={dosis === 1}
           onClick={() =>{
-            // setSelectedFilter('Pertama')
+            setFilter('dosis', 1)
             setAnchorEl(null)
             handleClose()
           }}
         >
-          Pertama
+          1
         </MenuItem>
         <MenuItem 
+          selected={dosis === 2}
           onClick={() =>{
-            // setSelectedFilter('Kedua')
+            setFilter('dosis', 2)
             setAnchorEl(null)
             handleClose()
           }}
         >
-          Kedua
+          2
         </MenuItem>
         <MenuItem 
+          selected={dosis === 3}
           onClick={() =>{
-            // setSelectedFilter('Ketiga')
+            setFilter('dosis', 3)
             setAnchorEl(null)
             handleClose()
           }}
         >
-          Ketiga
+          3
         </MenuItem>
       </Menu>
     </>

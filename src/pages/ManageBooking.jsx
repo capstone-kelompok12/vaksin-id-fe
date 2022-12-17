@@ -1,16 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
 import { /*Button, Box, Typography,*/ Card, CardActions, CardContent, Chip, lighten, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FilterBooking from "../components/FilterBooking";
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getSessionList } from "../store/features/session/sessionSlice";
+import moment from "moment";
+
+const INITIAL_SELECTED_FILTER = {
+  date: '',
+  vaksin: '',
+  status: '',
+  waktu: '',
+  dosis: ''
+}
 
 const ManageBooking = () => {
+  const [selectedFilter, setSelectedFilter] = useState(INITIAL_SELECTED_FILTER)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const {data} = useSelector(state => state.session)
+
+  const sessionList = data.filter(val =>{
+    const {date, vaksin, status, waktu, dosis} = selectedFilter
+    if(date){
+      return val.Date.includes(moment(date).format('YYYY-MM-DD'))
+    }
+    if(vaksin !== 'Semua' && vaksin !== ''){
+      return val.Vaccine.Name === vaksin
+    }
+    if(status !== 'Semua' && status !== ''){
+      return val.status === status
+    }
+    if(waktu !== ''){
+      const [start, , end] = waktu.split(' ')
+      return val.StartSession === start && val.EndSession === end
+    }
+    if(dosis !== ''){
+      return val.Dose === dosis
+    }
+    return val
+  })
+  
+  const resetFilter = () => setSelectedFilter(INITIAL_SELECTED_FILTER)
+  const handleFilterDate = (e) =>{
+    setSelectedFilter({
+      ...INITIAL_SELECTED_FILTER,
+      date: moment(e)
+    })
+  }
+
+  const handleFilterVaksin = (e) =>{
+    setSelectedFilter({
+      ...INITIAL_SELECTED_FILTER,
+      vaksin: e.target.value
+    })
+  }
+
+  const handleFilterStatus = (e) =>{
+    setSelectedFilter({
+      ...INITIAL_SELECTED_FILTER,
+      status: e.target.value
+    })
+  }
+
+  const setFilter = (name, value) =>{
+    setSelectedFilter({
+      ...INITIAL_SELECTED_FILTER,
+      [name]: value
+    })
+  }
+
+  useEffect(() =>{
+    dispatch(getSessionList())
+  },[dispatch])
 
   return (
     <Stack spacing={3} sx={{p: 3}}>
-      <FilterBooking />
+      <FilterBooking 
+        resetFilter={resetFilter}
+        selectedFilter={selectedFilter}
+        handleFilterDate={handleFilterDate}
+        handleFilterVaksin={handleFilterVaksin}
+        handleFilterStatus={handleFilterStatus}
+        setFilter={setFilter}
+      />
+
       <Stack
         direction='row'
         sx={{
@@ -24,13 +101,20 @@ const ManageBooking = () => {
           },
         }}
       >
-        {[1,2,3,4,5,6,7,8,9,0].map(val =>{
-          const id = val
+        {sessionList.map(val =>{
+          const {
+            ID, SessionName, Vaccine,
+            Capacity, CapacityLeft,
+            Dose, EndSession, StartSession,
+            Booking, status, color
+          } = val
+          const unconfirmed = Booking.map(({Status}) => !Status)
+
           return(
             <Card 
               elevation={2}
-              key={id} 
-              onClick={() =>navigate(`/manage-booking/${id}`)}
+              key={ID} 
+              onClick={() =>navigate(`/manage-booking/${ID}`)}
               sx={{
                 borderRadius: 2, 
                 flexBasis: '31%', 
@@ -46,12 +130,12 @@ const ManageBooking = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <Typography>Novavax-01</Typography>
-                  <Chip label='Berlangsung' color='softWarning' sx={{color: 'softWarning.text'}} />
+                  <Typography>{SessionName}</Typography>
+                  <Chip label={status} color={color} sx={{color: `${color}.text`}} />
                 </Stack>
                 <Stack sx={{mt: 2}}>
-                  <Typography variant='h5'>34 / 125</Typography>
-                  <Typography variant='h6' gutterBottom>Novavax</Typography>
+                  <Typography variant='h5'>{`${Capacity - CapacityLeft}/${Capacity}`}</Typography>
+                  <Typography variant='h6' gutterBottom>{Vaccine.Name}</Typography>
                   <Typography 
                     sx={{
                       color: lighten('#000', 0.3), 
@@ -62,7 +146,7 @@ const ManageBooking = () => {
                     }}
                   >
                     <BloodtypeIcon />
-                    Dosis Pertama
+                    Dosis {Dose}
                   </Typography>
                   <Typography 
                     sx={{
@@ -74,18 +158,25 @@ const ManageBooking = () => {
                     }}
                   >
                     <AccessTimeIcon />
-                    08.00 - 11.00 WIB
+                    {StartSession} - {EndSession} WIB
                   </Typography>
                 </Stack>
               </CardContent>
               <CardActions 
                 sx={{
-                  bgcolor: 'softDanger.main', 
-                  color: 'softDanger.text',
+                  bgcolor: unconfirmed.length > 0 ? 'softDanger.main' : 'softSuccess.main', 
+                  color: unconfirmed.length > 0 ? 'softDanger.text' : 'softSuccess.text',
                   p: 2
                 }}
               >
-                <Typography>100+ orang belum dikonfirmasi</Typography>
+                <Typography>
+                  {!unconfirmed.length
+                    ? 'Semua orang telah dikonfirmasi' 
+                    : unconfirmed.length < 100 
+                      ? `${unconfirmed.length} orang belum dikonfirmasi`
+                      : '100+ orang belum dikonfirmasi'
+                  } 
+                </Typography>
               </CardActions>
             </Card>
           )

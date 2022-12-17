@@ -1,11 +1,8 @@
+import React from 'react'
 import { Box, Chip, lighten, Stack, Typography } from '@mui/material'
 import moment from 'moment/moment'
-import React, { useEffect, useState } from 'react'
-import getSessionStatus from '../utils/getSessionStatus'
 
 const SessionStats = ({showStatus, data}) => {
-  const [statusColor, setStatusColor] = useState({})
-  const {status, color} = statusColor
 
   const{
     Booking,
@@ -18,23 +15,13 @@ const SessionStats = ({showStatus, data}) => {
     // ID,
     // IdVaccine,
     // SessionName,
-    Vaccine
+    Vaccine,
+    status,
+    color
   } = data
 
   const hadir = Booking.map(val => val.status === 'Attended')
   const tidakHadir = Booking.map(val => val.status === 'Absent')
-
-  useEffect(() => {
-    const {
-      CapacityLeft,
-      Date,
-      StartSession,
-      EndSession,
-    } = data
-
-    const colorState = getSessionStatus({StartSession, EndSession, CapacityLeft, Date})
-    setStatusColor(colorState)
-  }, [data])
   
   return (
     <Stack spacing={2}>

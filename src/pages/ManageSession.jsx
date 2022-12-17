@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSessionList } from "../store/features/session/sessionSlice";
 import moment from "moment/moment";
-import getSessionStatus from "../utils/getSessionStatus";
 
 const columns = [
   {field: 'tanggal', headerName: 'Tanggal', width: 120},
@@ -52,10 +51,10 @@ const ManageSession = () => {
       Capacity, 
       CapacityLeft,
       Dose: dosis,
-      Vaccine
+      Vaccine,
+      status,
+      color
     } = val
-    
-    const {status, color} = getSessionStatus({StartSession, EndSession, CapacityLeft, Date})
     
     return(
       {
