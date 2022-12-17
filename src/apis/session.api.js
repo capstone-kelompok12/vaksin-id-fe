@@ -1,15 +1,9 @@
-import {axiosInstance} from '../configs/axiosInstance'
-import Auth from '../utils/Auth'
-
-const token = Auth.getToken()
-const headers = {
-  Authorization: `Bearer ${token}`
-}
+import axiosInstance from '../configs/axiosInstance'
 
 const APISession = {
   async getSessionList(){
     try{
-      const res = await axiosInstance.get('/admin/sessions', {headers})
+      const res = await axiosInstance.get('/admin/sessions')
       return res
     }catch(err){
       throw err
@@ -17,7 +11,7 @@ const APISession = {
   },
   async getSessionDetail(id){
     try{
-      const res = await axiosInstance.get(`/admin/sessions/${id}`,{headers})
+      const res = await axiosInstance.get(`/admin/sessions/${id}`)
       return res
     }catch(err){
       throw err
@@ -25,7 +19,7 @@ const APISession = {
   },
   async addSession(data){
     try{
-      const res = await axiosInstance.post(`/admin/sessions`, data, {headers})
+      const res = await axiosInstance.post(`/admin/sessions`, data)
       return res
     }catch(err){
       throw err
