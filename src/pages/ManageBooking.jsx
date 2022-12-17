@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSessionList } from "../store/features/session/sessionSlice";
 import moment from "moment";
+import NotFoundImg from '../assets/img/notfound.png'
 
 const INITIAL_SELECTED_FILTER = {
   date: '',
@@ -103,7 +104,7 @@ const ManageBooking = () => {
       >
         {sessionList.map(val =>{
           const {
-            ID, SessionName, Vaccine,
+            ID: id, SessionName, Vaccine,
             Capacity, CapacityLeft,
             Dose, EndSession, StartSession,
             Booking, status, color
@@ -113,13 +114,17 @@ const ManageBooking = () => {
           return(
             <Card 
               elevation={2}
-              key={ID} 
-              onClick={() =>navigate(`/manage-booking/${ID}`)}
+              key={id} 
+              onClick={() =>navigate(`/manage-booking/${id}`)}
               sx={{
                 borderRadius: 2, 
                 flexBasis: '31%', 
                 // bgcolor: '#FBFDF7',
                 cursor: 'pointer',
+                transition: 'ease .5s',
+                '&:hover': {
+                  transform: 'scale(1.0175)'
+                }
               }}
             >
               <CardContent>
@@ -181,6 +186,21 @@ const ManageBooking = () => {
             </Card>
           )
         })}
+        {sessionList.length < 1 &&
+          <Stack 
+            alignItems='center' 
+            justifyContent='center' 
+            width={'100%'}
+            sx={{py: 6}}
+          >
+            <img 
+              src={NotFoundImg} 
+              alt="not-found" 
+              width={260}
+            />
+            Upss... Sesi yang kamu cari tidak ada
+          </Stack>
+        }
       </Stack>
     </Stack>
   );
