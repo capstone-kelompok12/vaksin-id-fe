@@ -111,6 +111,7 @@ const ModalAddSession = () => {
       })
     }
 
+    // eslint-disable-next-line array-callback-return
     vaksinData.map(({Name, Dose, Stock}) =>{
       const {vaccine_name, dose} = formData
       if(Name === vaccine_name && Dose === dose){ 
