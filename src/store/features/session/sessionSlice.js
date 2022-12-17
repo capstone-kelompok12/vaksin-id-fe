@@ -2,8 +2,26 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
 import APISession from "../../../apis/session.api"
 
+const INIT_SESSION_DETAIL = {
+  Booking: [],
+  Capacity: 0,
+  CapacityLeft: 0,
+  CreatedAt: "",
+  Date: "",
+  Dose: 0,
+  EndSession: "",
+  ID: "",
+  IdVaccine: "",
+  IsClose: false,
+  SessionName: "",
+  StartSession: "",
+  UpdatedAt: "",
+  Vaccine: {}
+}
+
 const initialState = {
   data: [],
+  detail: INIT_SESSION_DETAIL,
   loading: false,
   error: false
 }
@@ -11,6 +29,15 @@ const initialState = {
 export const getSessionList = createAsyncThunk('get/sessionList', async() =>{
   try{
     const res = await APISession.getSessionList()
+    return res.data.data
+  }catch(err){
+    throw err
+  }
+})
+
+export const getSessionDetail = createAsyncThunk('get/sessionDetail', async(id) =>{
+  try{
+    const res = await APISession.getSessionDetail(id)
     return res.data.data
   }catch(err){
     throw err
@@ -41,6 +68,19 @@ const sessionSlice = createSlice({
         state.error = false
       })
       .addCase(getSessionList.rejected, (state) =>{
+        state.loading = false
+        state.error = true
+      })
+      .addCase(getSessionDetail.pending, (state) =>{
+        state.loading = true
+        state.error = false
+      })
+      .addCase(getSessionDetail.fulfilled, (state, {payload}) =>{
+        state.loading = false
+        state.detail = payload
+        state.error = false
+      })
+      .addCase(getSessionDetail.rejected, (state) =>{
         state.loading = false
         state.error = true
       })

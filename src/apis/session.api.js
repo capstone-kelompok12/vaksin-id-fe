@@ -15,6 +15,14 @@ const APISession = {
       throw err
     }
   },
+  async getSessionDetail(id){
+    try{
+      const res = await axiosInstance.get(`/admin/sessions/${id}`,{headers})
+      return res
+    }catch(err){
+      throw err
+    }
+  },
   async addSession(data){
     try{
       const res = await axiosInstance.post(`/admin/sessions`, data, {headers})

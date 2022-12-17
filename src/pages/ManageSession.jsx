@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSessionList } from "../store/features/session/sessionSlice";
 import moment from "moment/moment";
+import getSessionStatus from "../utils/getSessionStatus";
 
 const columns = [
   {field: 'tanggal', headerName: 'Tanggal', width: 120},
@@ -22,7 +23,6 @@ const columns = [
     width: 160,
     renderCell: (props) =>{
       const {/*id, tanggal, waktu, dosis, namaSesi, vaksin, kapasitas,*/ status, color } = props.row
-      // console.log({id, tanggal, waktu, dosis, namaSesi, vaksin, kapasitas, status })
       return <Chip label={status} color={color} sx={{color: `${color}.text`}} />
     },
   },{
@@ -42,8 +42,6 @@ const ManageSession = () => {
   const {data: sessionList, loading} = useSelector(state => state.session)
   
   const rows = sessionList.map(val =>{
-    let status = ''
-    let color = ''
     const {
       ID: id, 
       Date,
@@ -56,25 +54,8 @@ const ManageSession = () => {
       Dose: dosis,
       Vaccine
     } = val
-    const start = moment(Date).set('hour', Number(StartSession.slice(0,2)))
-    const end = moment(Date).set('hour', Number(EndSession.slice(0,2)))
-
-    if(CapacityLeft > 0){
-      status = 'Tersedia'
-      color = 'softInfo'
-    }
-    if(CapacityLeft === 0){
-      status = 'Penuh'
-      color = 'softSuccess'
-    }
-    if(moment().isAfter(end)){
-      status = 'Selesai'
-      color = 'softNeutral'
-    }
-    if(moment().isBetween(start, end)){
-      status = 'Berlangsung'
-      color = 'softWarning'
-    }
+    
+    const {status, color} = getSessionStatus({StartSession, EndSession, CapacityLeft, Date})
     
     return(
       {
