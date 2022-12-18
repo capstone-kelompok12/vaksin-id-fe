@@ -12,6 +12,7 @@ import ProtectedRoute from './ProtectedRoute';
 import SessionDetail from '../pages/SessionDetail';
 import BookDetail from '../pages/BookDetail';
 import NotFound from '../pages/NotFound';
+import Register from '../pages/Register';
 
 const SetupRouter = () => {
   return (
@@ -29,6 +30,7 @@ const SetupRouter = () => {
         <Route path='/' element={<ProtectedRoute />}>
           <Route index element={<Landing/>}/>
           <Route path='/login' element={<LoginPage/>}/>
+          <Route path='/register' element={<Register/>}/>
         </Route>
         <Route path='*' element={<NotFound/>}/>
       </Routes>
