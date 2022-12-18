@@ -1,16 +1,9 @@
-import { axiosInstance } from "../configs/axiosInstance";
-import Auth from "../utils/Auth";
-
-const token = Auth.getToken()
-
-const headers = {
-  Authorization: `Bearer ${token}`
-}
+import axiosInstance from "../configs/axiosInstance";
 
 const APIVaksin = {
   async getVaksinList(){
     try{
-      const res = await axiosInstance.get('/admin/vaccines', {headers})
+      const res = await axiosInstance.get('/admin/vaccines')
       return res
     }catch(err){
       throw err
@@ -18,7 +11,7 @@ const APIVaksin = {
   },
   async addVaksin(data){
     try{
-      const res = await axiosInstance.post('/admin/vaccines', data, {headers})
+      const res = await axiosInstance.post('/admin/vaccines', data)
       return res;
     }catch(err){
       throw err;
@@ -26,7 +19,7 @@ const APIVaksin = {
   },
   async updateStock({id, data}){
     try{
-      const res = await axiosInstance.put(`/admin/vaccines/${id}`, data, {headers})
+      const res = await axiosInstance.put(`/admin/vaccines/${id}`, data)
       return res
     }catch(err){
       throw err
@@ -34,7 +27,7 @@ const APIVaksin = {
   },
   async deleteVaksin(id){
     try{
-      const res = await axiosInstance.delete(`/admin/vaccines/${id}`,{headers})
+      const res = await axiosInstance.delete(`/admin/vaccines/${id}`)
       return res
     }catch(err){
       throw err

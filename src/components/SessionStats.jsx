@@ -20,8 +20,10 @@ const SessionStats = ({showStatus, data}) => {
     color
   } = data
 
-  const hadir = Booking.map(val => val.status === 'Attended')
-  const tidakHadir = Booking.map(val => val.status === 'Absent')
+  const hadir = Booking.filter(val => val.Status === 'Attended')
+  const tidakHadir = Booking.filter(val => val.Status === 'Absent')
+  const diterima = Booking.filter(val => val.Status === 'Accepted')
+  const ditolak = Booking.filter(val => val.Status === 'Rejected')
   
   return (
     <Stack spacing={2}>
@@ -83,7 +85,7 @@ const SessionStats = ({showStatus, data}) => {
             {showStatus ? 'Penerima Vaksin Hadir' : 'Book Vaksinasi Diterima'}
           </Typography>
           <Typography variant='h6'>
-            {showStatus ? hadir.length : 0}
+            {showStatus ? hadir.length : diterima.length}
           </Typography>
         </Stack>
         <Stack
@@ -98,7 +100,7 @@ const SessionStats = ({showStatus, data}) => {
             {showStatus ? 'Penerima Vaksin Tidak Hadir' : 'Sisa Kapasitas Vaksinasi'}
           </Typography>
           <Typography variant='h6'>
-            {showStatus ? tidakHadir.length : 1}
+            {showStatus ? tidakHadir.length : ditolak.length}
           </Typography>
         </Stack>
       </Stack>
