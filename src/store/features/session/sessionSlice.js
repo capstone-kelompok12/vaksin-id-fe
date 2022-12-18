@@ -54,6 +54,16 @@ export const addSession = createAsyncThunk('add/session', async(data) =>{
   }
 })
 
+export const confirmBooking = createAsyncThunk('update/bookStatus', async(data) =>{
+  try{
+    const res = await APISession.confirmBooking(data)
+    console.log(res)
+    return res.data.data
+  }catch(err){
+    throw err
+  }
+})
+
 const sessionSlice = createSlice({
   name: 'session',
   initialState,
@@ -100,13 +110,38 @@ const sessionSlice = createSlice({
         state.error = false
         const {StartSession, EndSession, CapacityLeft, Date} = payload
         const {status, color} = getSessionStatus({StartSession, EndSession, CapacityLeft, Date})
-        state.data.unshift({...payload, color, status})
+        state.data.unshift({...payload, color, status, Booking: []})
         toast.success('Berhasil menambahkan session!')
       })
       .addCase(addSession.rejected, (state) =>{
         state.loading = false
         state.error = true
         toast.error('Gagal menambahkan session!')
+      })
+      .addCase(confirmBooking.pending, (state) =>{
+        state.loading = true
+        state.error = false
+      })
+      .addCase(confirmBooking.fulfilled, (state, {payload}) =>{
+        state.loading = false
+        state.error = false
+
+        const updated = state.detail.Booking.map(val =>{
+          const changed = payload.map(val => val.ID)
+          const [updated] = payload
+
+          if(changed.some(id => id === val.ID)){
+            const [currentData] = payload.filter(item => item.ID === val.ID)
+            return {...val, Status: updated.Status, Queue: currentData.Queue}
+          }return val;
+        })
+        state.detail = {...state.detail, Booking: updated}
+        toast.success('Berhasil konfirmasi booking!')
+      })
+      .addCase(confirmBooking.rejected, (state) =>{
+        state.loading = false
+        state.error = true
+        toast.error('Gagal konfirmasi booking!')
       })
   }
 })

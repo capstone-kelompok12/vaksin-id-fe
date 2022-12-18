@@ -109,7 +109,7 @@ const ManageBooking = () => {
             Dose, EndSession, StartSession,
             Booking, status, color
           } = val
-          const unconfirmed = Booking.map(({Status}) => !Status)
+          const unconfirmed = Booking.filter(({Status}) => Status === 'OnProcess')
 
           return(
             <Card 

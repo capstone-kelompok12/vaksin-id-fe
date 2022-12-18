@@ -24,6 +24,15 @@ const APISession = {
     }catch(err){
       throw err
     }
+  },
+  // for confirm neither it accepted nor rejected
+  async confirmBooking(data){
+    try{
+      const res = await axiosInstance.put('/admin/bookings/acc', data)
+      return res
+    }catch(err){
+      throw err
+    }
   }
 }
 

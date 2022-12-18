@@ -9,7 +9,7 @@ const config = {
 const axiosInstance = axios.create(config)
 axiosInstance.interceptors.request.use(
   (req) => {
-    if(req.url.includes('vaccine') || req.url.includes('sessions')){
+    if(req.url.includes('vaccine') || req.url.includes('sessions') || req.url.includes('bookings')){
       req.headers.Authorization = `Bearer ${Auth.getToken()}`
     }
     return req;
