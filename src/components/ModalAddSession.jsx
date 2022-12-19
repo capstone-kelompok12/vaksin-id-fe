@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getVaksinList } from '../store/features/vaksin/vaksinSlice';
 import { addSession } from '../store/features/session/sessionSlice';
+import validateInput from '../utils/validateInput';
 
 const INITIAL_FORM_DATA = {
   id_vaccine: '',
@@ -37,6 +38,7 @@ const ModalAddSession = () => {
   const [open, setOpen] = useState(false)
   const [formData, setFormData] = useState(INITIAL_FORM_DATA)
   const [maxCapacity, setMaxCapacity] = useState(0)
+  const [error, setError] = useState('')
   const vaksinData = useSelector(state => state.vaksin.data)
   const dispatch = useDispatch()
 
@@ -63,7 +65,11 @@ const ModalAddSession = () => {
   
   const handleChange = (e) =>{
     const {name, value} = e.target
+    const {errorMsg} = validateInput(e)
     if(name === 'vaccine_name'){
+      if(errorMsg){
+        setError(errorMsg)
+      }
       setFormData({
         ...formData, 
         [name]: value,
@@ -136,6 +142,7 @@ const ModalAddSession = () => {
         open={open}
         maxWidth='xs'
         fullWidth
+        aria-labelledby='dialog-add-session'
         onClose={() => setOpen(false)}
       >
         <DialogTitle align='center'>Tambah Sesi</DialogTitle>
@@ -150,6 +157,8 @@ const ModalAddSession = () => {
                 <TextField 
                   name='session_name' 
                   label='Nama Sesi' 
+                  helperText={error}
+                  error={error !== ''}
                   value={formData.session_name} 
                   onChange={handleChange} 
                 />
