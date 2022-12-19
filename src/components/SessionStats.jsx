@@ -100,7 +100,7 @@ const SessionStats = ({showStatus, data}) => {
             {showStatus ? 'Penerima Vaksin Tidak Hadir' : 'Sisa Kapasitas Vaksinasi'}
           </Typography>
           <Typography variant='h6'>
-            {showStatus ? tidakHadir.length : CapacityLeft}
+            {showStatus ? tidakHadir.length : CapacityLeft > 0 ? CapacityLeft : 0}
           </Typography>
         </Stack>
       </Stack>

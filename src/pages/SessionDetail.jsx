@@ -80,6 +80,7 @@ const SessionDetail = () => {
     const {ID: id, Status, Queue: antrian, User, /*IdSession: id_session,*/kehadiran, attendColor } = val
     const {NIK: nik, Fullname: nama, Email: email, BirthDate} = User
     const {statusBook, statusColor} = getBookingStatus(Status)
+    console.log({statusBook, statusColor, val})
     // const {kehadiran, attendColor} = getKehadiranStatus(Status)
     const umur = moment().diff(BirthDate, 'years')
     

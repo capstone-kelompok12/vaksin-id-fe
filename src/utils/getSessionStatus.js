@@ -20,7 +20,7 @@ const getSessionStatus = ({StartSession, EndSession, CapacityLeft, Date, IsClose
     status = 'Tersedia'
     color = 'softInfo'
   }
-  if(CapacityLeft === 0){
+  if(CapacityLeft <= 0){
     status = 'Penuh'
     color = 'softSuccess'
   }
