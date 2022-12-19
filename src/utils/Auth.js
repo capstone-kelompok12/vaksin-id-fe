@@ -17,6 +17,7 @@ const Auth = {
   },
   logout(navigate){
     Cookies.remove('token')
+    Cookies.remove('rs_name')
     toast.warning('Berhasil logout!')
     navigate('/login')
   },
