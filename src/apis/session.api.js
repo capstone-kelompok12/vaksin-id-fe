@@ -33,6 +33,14 @@ const APISession = {
     }catch(err){
       throw err
     }
+  },
+  async closeSession(id){
+    try{
+      const res = await axiosInstance.put(`/admin/sessions/status/${id}`)
+      return res
+    }catch(err){
+      throw err
+    }
   }
 }
 

@@ -6,7 +6,7 @@ import ModalAddSession from "../components/ModalAddSession";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getSessionList } from "../store/features/session/sessionSlice";
+import {/* closeSession,*/ getSessionList } from "../store/features/session/sessionSlice";
 import moment from "moment/moment";
 
 const columns = [
@@ -74,6 +74,16 @@ const ManageSession = () => {
   useEffect(() =>{
     dispatch(getSessionList())
   },[dispatch])
+
+  // useEffect(() =>{
+  //   sessionList.map(val =>{
+  //     const {ID, EndSession, Date} = val
+  //     const end = moment(Date).set('hour', Number(EndSession.slice(0,2)))
+  //     if(moment().isAfter(end)){
+  //       dispatch(closeSession(ID))
+  //     }
+  //   })
+  // },[dispatch, sessionList])
 
   return (
     <Stack

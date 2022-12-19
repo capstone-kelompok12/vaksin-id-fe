@@ -9,7 +9,7 @@ import moment from "moment"
  * @returns {{String, String}} status, color
  */
 
-const getSessionStatus = ({StartSession, EndSession, CapacityLeft, Date}) =>{
+const getSessionStatus = ({StartSession, EndSession, CapacityLeft, Date, IsClose}) =>{
   let status = ''
   let color = ''
 
@@ -24,7 +24,7 @@ const getSessionStatus = ({StartSession, EndSession, CapacityLeft, Date}) =>{
     status = 'Penuh'
     color = 'softSuccess'
   }
-  if(moment().isAfter(end)){
+  if(moment().isAfter(end) || IsClose){
     status = 'Selesai'
     color = 'softNeutral'
   }

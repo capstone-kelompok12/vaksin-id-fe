@@ -58,7 +58,15 @@ export const addSession = createAsyncThunk('add/session', async(data) =>{
 export const confirmBooking = createAsyncThunk('update/bookStatus', async(data) =>{
   try{
     const res = await APISession.confirmBooking(data)
-    console.log(res)
+    return res.data.data
+  }catch(err){
+    throw err
+  }
+})
+
+export const closeSession = createAsyncThunk('close/session', async(id) =>{
+  try{
+    const res = await APISession.closeSession(id)
     return res.data.data
   }catch(err){
     throw err
@@ -147,6 +155,24 @@ const sessionSlice = createSlice({
         state.loading = false
         state.error = true
         toast.error('Gagal konfirmasi booking!')
+      })
+      .addCase(closeSession.pending, (state) =>{
+        state.loading = true
+        state.error = false
+      })
+      .addCase(closeSession.fulfilled, (state, {payload}) =>{
+        state.loading = false
+        state.error = false
+
+        state.data = state.data.map(val =>{
+          if(val.ID === payload.ID){
+            return {...val, IsClose: true}
+          }return val
+        })
+      })
+      .addCase(closeSession.rejected, (state) =>{
+        state.loading = false
+        state.error = true
       })
   },
   reducers:{
