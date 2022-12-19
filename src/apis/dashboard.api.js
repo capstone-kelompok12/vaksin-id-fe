@@ -1,7 +1,7 @@
 import axiosInstance from "../configs/axiosInstance";
 
 const DashboardApi = {
-  async Bookings() {
+  async fetchBookings() {
     try {
       const res = await axiosInstance.get("/dashboard/bookings");
       return res;
@@ -9,7 +9,7 @@ const DashboardApi = {
       return err;
     }
   },
-  async SessionsActive() {
+  async fetchSessionsActive() {
     try {
       const res = await axiosInstance.get("/dashboard/sessions");
       return res;
@@ -17,7 +17,7 @@ const DashboardApi = {
       return err;
     }
   },
-  async SessionsDone() {
+  async fetchSessionsDone() {
     try {
       const res = await axiosInstance.get("/dashboard/sessions/amount");
       return res;
@@ -25,7 +25,7 @@ const DashboardApi = {
       return err;
     }
   },
-  async UserVaccinated() {
+  async fetchUserVaccinated() {
     try {
       const res = await axiosInstance.get("/dashboard/history");
       return res;

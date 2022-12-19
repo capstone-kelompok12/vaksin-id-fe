@@ -1,12 +1,6 @@
 import { Card, CardContent, Stack, Typography } from "@mui/material";
-import React from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchBookings,
-  fetchSessions,
-  fetchUserVaccinated,
-} from "../store/features/dashboard/dashboardSlice";
+import React, { useEffect, useState } from "react";
+import DashboardApi from "../apis/dashboard.api";
 import formatNumber from "../utils/formatNumber";
 
 const stats = [
@@ -37,24 +31,9 @@ const stats = [
 ];
 
 const Overview = () => {
-  // const dispatch = useDispatch();
-  // const { loading, Bookings, Sessions, VaccinatedUser } = useSelector(
-  //   state => state.dashboard
-  // );
-
-  // const DashboardAllData = [Bookings, Sessions, VaccinatedUser];
-
-  // console.log(fetchBookings);
-
-  // useEffect(() => {
-  //   fetchBookings();
-  // }, []);
-
-  // useEffect(() => {
-  //   dispatch(fetchDashboardBookings());
-  //   dispatch(fetchDashboardSessions());
-  //   dispatch(fetchDashboardUserVaccinated());
-  // }, [dispatch]);
+  useEffect(() => {
+    // DashboardApi.fetchBookings().then(console.log(res.data));
+  }, []);
 
   return (
     <Stack direction={"row"} spacing={2} sx={{ pt: 2 }}>

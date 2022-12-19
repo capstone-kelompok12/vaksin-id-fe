@@ -11,45 +11,6 @@ export const getVaksinList = createAsyncThunk("get/vaksin", async () => {
   }
 });
 
-export const fetchBookings = createAsyncThunk(
-  "fetch/dashboard/bookings",
-  async () => {
-    try {
-      const response = await DashboardApi.Bookings();
-      return response.data.data;
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
-  }
-);
-
-export const fetchSessionsActive = createAsyncThunk(
-  "fetch/dashboard/sessions",
-  async () => {
-    try {
-      const response = await DashboardApi.SessionsActive();
-      return response.data.data;
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
-  }
-);
-
-export const fetchUserVaccinated = createAsyncThunk(
-  "fetch/dashboard/history",
-  async () => {
-    try {
-      const response = await DashboardApi.UserVaccinated();
-      return response.data.data;
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
-  }
-);
-
 export const fetchUserStatic = createAsyncThunk(
   "fetch/dashboard/statistics/users",
   async () => {
@@ -66,9 +27,6 @@ export const fetchUserStatic = createAsyncThunk(
 const initialState = {
   data: [],
   dataVaksin: [],
-  Bookings: 0,
-  Sessions: 0,
-  VaccinatedUser: 0,
   loading: false,
   error: false,
 };
@@ -78,45 +36,6 @@ const dashboardSlice = createSlice({
   initialState,
   extraReducers(builder) {
     builder
-      // .addCase(fetchBookings.pending, state => {
-      //   state.loading = true;
-      //   state.error = false;
-      // })
-      // .addCase(fetchBookings.fulfilled, (state, { payload }) => {
-      //   state.loading = false;
-      //   state.error = false;
-      //   state.Bookings = payload;
-      // })
-      // .addCase(fetchBookings.rejected, state => {
-      //   state.loading = false;
-      //   state.error = true;
-      // })
-      // .addCase(fetchSessions.pending, state => {
-      //   state.loading = true;
-      //   state.error = false;
-      // })
-      // .addCase(fetchSessions.fulfilled, (state, { payload }) => {
-      //   state.loading = false;
-      //   state.error = false;
-      //   state.Sessions = payload;
-      // })
-      // .addCase(fetchSessions.rejected, state => {
-      //   state.loading = false;
-      //   state.error = true;
-      // })
-      // .addCase(fetchUserVaccinated.pending, state => {
-      //   state.loading = true;
-      //   state.error = false;
-      // })
-      // .addCase(fetchUserVaccinated.fulfilled, (state, { payload }) => {
-      //   state.loading = false;
-      //   state.error = false;
-      //   state.VaccinatedUser = payload;
-      // })
-      // .addCase(fetchUserVaccinated.rejected, state => {
-      //   state.loading = false;
-      //   state.error = true;
-      // });
       .addCase(fetchUserStatic.pending, state => {
         state.loading = true;
         state.error = false;

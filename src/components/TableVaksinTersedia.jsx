@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
+import getGroupedData from "../utils/getGroupDose";
 import { useDispatch, useSelector } from "react-redux";
 import { getVaksinList } from "../store/features/dashboard/dashboardSlice";
 
@@ -31,36 +32,31 @@ const cell = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    name: "Moderna",
-    dosis1: 74,
-    dosis2: 36,
-    dosis3: 143,
-  },
-  {
-    id: 2,
-    name: "Sinovac",
-    dosis1: 23,
-    dosis2: 98,
-    dosis3: 423,
-  },
-  {
-    id: 3,
-    name: "Pfizer",
-    dosis1: 42,
-    dosis2: 21,
-    dosis3: 123,
-  },
-];
-
 const TableVaksinTersedia = () => {
   const dispatch = useDispatch();
 
   const { loading, dataVaksin } = useSelector(state => state.dashboard);
 
-  console.log(dataVaksin);
+  const result = dataVaksin.reduce((acc, item) => {
+    const foundDose = acc.find(x => x.name === item.Name);
+    if (foundDose) {
+      foundDose[`dosis${item.Dose}`] = item.Stock;
+    } else {
+      acc.push({
+        name: item.Name,
+        [`dosis${item.Dose}`]: item.Stock,
+      });
+    }
+    return acc;
+  }, []);
+
+  result.forEach(item => {
+    for (let i = 1; i <= 3; i++) {
+      if (!item[`dosis${i}`]) {
+        item[`dosis${i}`] = 0;
+      }
+    }
+  });
 
   useEffect(() => {
     dispatch(getVaksinList());
@@ -90,7 +86,8 @@ const TableVaksinTersedia = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(({ id, name, dosis1, dosis2, dosis3 }) => {
+            {result.map((item, id) => {
+              const { name, dosis1, dosis2, dosis3 } = item;
               return (
                 <TableRow key={id} height={52}>
                   <TableCell>{name}</TableCell>
