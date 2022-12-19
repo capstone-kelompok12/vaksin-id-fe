@@ -34,7 +34,7 @@ const cell = [
 const TablePendaftar = () => {
   const dispatch = useDispatch();
 
-  const { loading, data: DataDashboard } = useSelector(
+  const { data: DataDashboard } = useSelector(
     state => state.dashboard
   );
 

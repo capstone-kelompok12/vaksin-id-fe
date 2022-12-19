@@ -35,7 +35,7 @@ const cell = [
 const TableVaksinTersedia = () => {
   const dispatch = useDispatch();
 
-  const { loading, dataVaksin } = useSelector(state => state.dashboard);
+  const { dataVaksin } = useSelector(state => state.dashboard);
 
   const result = dataVaksin.reduce((acc, item) => {
     const foundDose = acc.find(x => x.name === item.Name);
