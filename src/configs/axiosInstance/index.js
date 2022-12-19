@@ -1,22 +1,23 @@
 import axios from "axios";
 import { CONST } from "../../utils/constants";
-import Auth from '../../utils/Auth'
+import Auth from "../../utils/Auth";
 
 const config = {
   baseURL: CONST.BASE_URL_API,
-}
+};
 
-const axiosInstance = axios.create(config)
+const axiosInstance = axios.create(config);
 axiosInstance.interceptors.request.use(
   (req) => {
-    if(req.url.includes('vaccine') || req.url.includes('sessions') || req.url.includes('bookings')){
-      req.headers.Authorization = `Bearer ${Auth.getToken()}`
+    const { url, headers} = req
+    if(url.includes('vaccine') || url.includes('sessions') || url.includes('bookings') || url.includes('profile') || url.includes('dashboard')){
+      headers.Authorization = `Bearer ${Auth.getToken()}`
     }
     return req;
   },
-  (err) => {
+  err => {
     return Promise.reject(err);
   }
-)
+);
 
 export default axiosInstance;

@@ -9,6 +9,7 @@ import Logo from "../assets/img/logo-vaksin-id-with-name.png";
 import APIAuth from '../apis/auth.api';
 import Auth from '../utils/Auth';
 import { useEffect } from 'react';
+import validateInput from '../utils/validateInput';
 
 const INITIAL_VALUE = {
   email: '',
@@ -37,7 +38,7 @@ const LoginForm = () => {
 
     const {name, value} = e.target
     setValues({ ...values, [name]: value });
-    
+
     if(name === 'email'){
       if(!emailPattern.test(value)){
         setError({
@@ -49,6 +50,16 @@ const LoginForm = () => {
           ...error,
           email: ''
         })
+      }
+    }else{
+      const {fieldName, errorMsg} = validateInput(e)
+      if(errorMsg){
+        setError({
+          ...error,
+          [fieldName]: errorMsg
+        })
+      }else{
+        setError(INITIAL_ERROR)
       }
     }
   };

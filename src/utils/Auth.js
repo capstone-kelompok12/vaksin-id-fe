@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import APIAuth from "../apis/auth.api";
 
 const Auth = {
   isAuthorized(){
@@ -16,9 +17,20 @@ const Auth = {
   },
   logout(navigate){
     Cookies.remove('token')
+    Cookies.remove('rs_name')
     toast.warning('Berhasil logout!')
     navigate('/login')
   },
+  storeRSName(){
+    APIAuth.getDetailHF()
+      .then(res =>{
+        Cookies.set('rs_name', res.Name)
+      })
+      .catch(err => {throw err})
+  },
+  getRSName(){
+    return Cookies.get('rs_name')
+  }
 }
 
 export default Auth;

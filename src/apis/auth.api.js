@@ -8,6 +8,18 @@ const APIAuth = {
     }catch(err){
       throw err
     }
+  },
+  async getDetailHF(){
+    try{
+      const resAdmin = await axiosInstance.get(`/admin/profile`)
+      const { IdHealthFacilities } = resAdmin.data.data;
+      const resHF = await axiosInstance.get(`/healthfacilities`)
+      const detailHF = resHF.data.data.filter(val => val.ID === IdHealthFacilities)
+      
+      return detailHF[0]
+    }catch(err){
+      throw err
+    }
   }
 }
 

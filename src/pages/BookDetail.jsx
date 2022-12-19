@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { confirmBooking, getSessionDetail } from '../store/features/session/sessionSlice';
 import getBookingStatus from '../utils/getBookingStatus';
 import moment from 'moment/moment';
+import Auth from '../utils/Auth';
 
 const BookDetail = () => {
   const {id} = useParams()
@@ -119,6 +120,8 @@ const BookDetail = () => {
   }
 
   useEffect(() =>{
+    // store rs_name to cookie
+    Auth.storeRSName()
     dispatch(getSessionDetail(id))
   },[dispatch, id])  
 
