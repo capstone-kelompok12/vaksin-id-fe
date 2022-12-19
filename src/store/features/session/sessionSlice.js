@@ -3,6 +3,12 @@ import { toast } from "react-toastify"
 import APISession from "../../../apis/session.api"
 import getKehadiranStatus from "../../../utils/getKehadiranStatus"
 import getSessionStatus from "../../../utils/getSessionStatus"
+import emailjs from '@emailjs/browser';
+import { CONST } from "../../../utils/constants"
+import moment from "moment"
+import Auth from "../../../utils/Auth"
+
+const { EMAILJS_SERVICE_ID, EMAILJS_PUBLIC_KEY, EMAILJS_TEMPLATE_ACC, EMAILJS_TEMPLATE_REJECT } = CONST
 
 const INIT_SESSION_DETAIL = {
   Booking: [],
@@ -139,7 +145,7 @@ const sessionSlice = createSlice({
         state.loading = false
         state.error = false
 
-        const updated = state.detail.Booking.map(val =>{
+        const newBooking = state.detail.Booking.map(val =>{
           const changed = payload.map(val => val.ID)
           const [updated] = payload
 
@@ -148,7 +154,33 @@ const sessionSlice = createSlice({
             return {...val, Status: updated.Status, Queue: currentData.Queue}
           }return val;
         })
-        state.detail = {...state.detail, Booking: updated}
+        // send email confirmation
+        // eslint-disable-next-line array-callback-return
+        payload.map(val =>{
+          const { History, Session, Queue: antrian } = val
+          const template = val.Status === 'Accepted' ? EMAILJS_TEMPLATE_ACC : EMAILJS_TEMPLATE_REJECT
+          const { Fullname: to_name, NIK, Email: to_mail, BirthDate } = History.User
+          const { Date, StartSession, EndSession , Vaccine, SessionName: session_name } = Session
+          const rs_name = Auth.getRSName()
+
+          const data = {
+            to_name,
+            rs_name,
+            tanggal: moment(Date).format('DD MMMM YYYY'),
+            waktu: `${StartSession} - ${EndSession} WIB`,
+            antrian,
+            NIK,
+            to_mail,
+            umur: moment().diff(BirthDate, 'years'),
+            vaksin: Vaccine.Name,
+            dosis: Vaccine.Dose,
+            session_name
+          }
+
+          emailjs.send(EMAILJS_SERVICE_ID, template, data, EMAILJS_PUBLIC_KEY);
+        })
+
+        state.detail = {...state.detail, Booking: newBooking}
         toast.success('Berhasil konfirmasi booking!')
       })
       .addCase(confirmBooking.rejected, (state) =>{

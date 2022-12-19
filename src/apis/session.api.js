@@ -36,7 +36,9 @@ const APISession = {
   },
   async closeSession(id){
     try{
-      const res = await axiosInstance.put(`/admin/sessions/status/${id}`)
+      const res = await axiosInstance.put(`/admin/sessions/${id}/close`,{
+        is_close: true
+      })
       return res
     }catch(err){
       throw err

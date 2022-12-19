@@ -6,7 +6,7 @@ import ModalAddSession from "../components/ModalAddSession";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {/* closeSession,*/ getSessionList } from "../store/features/session/sessionSlice";
+import {/* closeSession,*/ closeSession, getSessionList } from "../store/features/session/sessionSlice";
 import moment from "moment/moment";
 
 const columns = [
@@ -75,15 +75,17 @@ const ManageSession = () => {
     dispatch(getSessionList())
   },[dispatch])
 
-  // useEffect(() =>{
-  //   sessionList.map(val =>{
-  //     const {ID, EndSession, Date} = val
-  //     const end = moment(Date).set('hour', Number(EndSession.slice(0,2)))
-  //     if(moment().isAfter(end)){
-  //       dispatch(closeSession(ID))
-  //     }
-  //   })
-  // },[dispatch, sessionList])
+  useEffect(() =>{
+    // eslint-disable-next-line array-callback-return
+    sessionList.map(val =>{
+      const {ID, EndSession, Date, IsClose } = val
+      const end = moment(Date).set('hour', Number(EndSession.slice(0,2)))
+      if(moment().isAfter(end) && !IsClose){
+        dispatch(closeSession(ID))
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[dispatch])
 
   return (
     <Stack
