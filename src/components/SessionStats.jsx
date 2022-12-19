@@ -23,7 +23,7 @@ const SessionStats = ({showStatus, data}) => {
   const hadir = Booking.filter(val => val.Status === 'Attended')
   const tidakHadir = Booking.filter(val => val.Status === 'Absent')
   const diterima = Booking.filter(val => val.Status === 'Accepted')
-  const ditolak = Booking.filter(val => val.Status === 'Rejected')
+  // const ditolak = Booking.filter(val => val.Status === 'Rejected')
   
   return (
     <Stack spacing={2}>
@@ -100,7 +100,7 @@ const SessionStats = ({showStatus, data}) => {
             {showStatus ? 'Penerima Vaksin Tidak Hadir' : 'Sisa Kapasitas Vaksinasi'}
           </Typography>
           <Typography variant='h6'>
-            {showStatus ? tidakHadir.length : ditolak.length}
+            {showStatus ? tidakHadir.length : CapacityLeft}
           </Typography>
         </Stack>
       </Stack>

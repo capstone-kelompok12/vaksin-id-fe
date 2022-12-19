@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { toast } from "react-toastify"
 import APISession from "../../../apis/session.api"
+import getKehadiranStatus from "../../../utils/getKehadiranStatus"
 import getSessionStatus from "../../../utils/getSessionStatus"
 
 const INIT_SESSION_DETAIL = {
@@ -94,7 +95,11 @@ const sessionSlice = createSlice({
         state.loading = false
         const {StartSession, EndSession, CapacityLeft, Date} = payload
         const {status, color} = getSessionStatus({StartSession, EndSession, CapacityLeft, Date})
-        state.detail = {...payload, status, color}
+        const Booking = payload.Booking.map(val =>{
+          const {kehadiran, attendColor} = getKehadiranStatus(val.Status)
+          return {...val, kehadiran, attendColor}
+        })
+        state.detail = {...payload, status, color, Booking}
         state.error = false
       })
       .addCase(getSessionDetail.rejected, (state) =>{
@@ -143,7 +148,33 @@ const sessionSlice = createSlice({
         state.error = true
         toast.error('Gagal konfirmasi booking!')
       })
+  },
+  reducers:{
+    confirmKehadiran: (state, action) =>{
+      const {id, status} = action.payload
+      const Booking = state.detail.Booking.map(val =>{
+        if(val.ID === id){
+          const {kehadiran, attendColor} = getKehadiranStatus(status)
+          return {...val, kehadiran, attendColor}
+        }return val
+      })
+      state.detail = {...state.detail, Booking}
+      toast.success('Berhasil konfirmasi kehadiran!')
+    },
+    confirmKehadiranMultiple: (state, {payload}) =>{
+      const {arrID, status} = payload
+      const updated = state.detail.Booking.map(val =>{
+      if(arrID.some(id => id === val.ID)){
+        const {kehadiran, attendColor} = getKehadiranStatus(status)
+        return {...val, kehadiran, attendColor}
+      }return val;
+    })
+
+    state.detail = {...state.detail, Booking: updated}
+    toast.success('Berhasil konfirmasi booking!')
+    }
   }
 })
+export const { confirmKehadiran, confirmKehadiranMultiple } = sessionSlice.actions;
 
 export default sessionSlice.reducer;
