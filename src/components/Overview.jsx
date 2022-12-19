@@ -1,50 +1,51 @@
 import { Card, CardContent, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import DashboardApi from "../apis/dashboard.api";
 import formatNumber from "../utils/formatNumber";
 
 const stats = [
   {
     id: 1,
     title: "Total Book Vaksinasi",
-    count: 5348,
     color: "softNeutral",
-    satuan: 'orang'
+    satuan: "orang",
   },
   {
     id: 2,
     title: "Total Penerima Vaksin",
-    count: 3748,
     color: "softInfo",
-    satuan: 'orang'
+    satuan: "orang",
   },
   {
     id: 3,
     title: "Sesi Vaksinasi Selesai",
-    count: 590,
     color: "softSuccess",
-    satuan: 'sesi'
+    satuan: "sesi",
   },
   {
     id: 4,
     title: "Sesi Vaksinasi Aktif",
-    count: 590,
     color: "softWarning",
-    satuan: 'sesi'
+    satuan: "sesi",
   },
 ];
 
 const Overview = () => {
+  useEffect(() => {
+    // DashboardApi.fetchBookings().then(console.log(res.data));
+  }, []);
+
   return (
     <Stack direction={"row"} spacing={2} sx={{ pt: 2 }}>
       {stats.map(item => {
-        const { id, title, count, color, satuan } = item;
+        const { id, title, color, satuan } = item;
         return (
           <Card
             key={id}
             // elevation={3}
             sx={{
               // width: "30%",
-              flexBasis: '25%',
+              flexBasis: "25%",
               bgcolor: `${color}.main`,
               color: `${color}.text`,
             }}
@@ -57,8 +58,8 @@ const Overview = () => {
               }}
             >
               <Typography>{title}</Typography>
-              <Typography variant="h5" /*color="primary"*/>
-                {formatNumber(count)}
+              <Typography variant="h5">
+                {/* {formatNumber()} */}
                 <Typography>{satuan}</Typography>
               </Typography>
             </CardContent>

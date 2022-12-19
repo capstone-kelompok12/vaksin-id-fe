@@ -1,79 +1,107 @@
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import React from 'react'
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
+import React, { useEffect } from "react";
+import getGroupedData from "../utils/getGroupDose";
+import { useDispatch, useSelector } from "react-redux";
+import { getVaksinList } from "../store/features/dashboard/dashboardSlice";
 
 const cell = [
   {
     id: 1,
-    label: 'Nama Vaksin'
+    label: "Nama Vaksin",
   },
   {
     id: 2,
-    label: 'Vaksinasi Dosis 1'
+    label: "Vaksinasi Dosis 1",
   },
   {
     id: 3,
-    label: 'Vaksinasi Dosis 2'
+    label: "Vaksinasi Dosis 2",
   },
   {
     id: 4,
-    label: 'Vaksinasi Dosis 3'
+    label: "Vaksinasi Dosis 3",
   },
-]
-
-const rows = [
-  {
-    id: 1,
-    name: 'Moderna',
-    dosis1: 74,
-    dosis2: 36,
-    dosis3: 143,
-  },
-  {
-    id: 2,
-    name: 'Sinovac',
-    dosis1: 23,
-    dosis2: 98,
-    dosis3: 423,
-  },
-  {
-    id: 3,
-    name: 'Pfizer',
-    dosis1: 42,
-    dosis2: 21,
-    dosis3: 123,
-  }
-]
+];
 
 const TableVaksinTersedia = () => {
+  const dispatch = useDispatch();
+
+  const { loading, dataVaksin } = useSelector(state => state.dashboard);
+
+  const result = dataVaksin.reduce((acc, item) => {
+    const foundDose = acc.find(x => x.name === item.Name);
+    if (foundDose) {
+      foundDose[`dosis${item.Dose}`] = item.Stock;
+    } else {
+      acc.push({
+        name: item.Name,
+        [`dosis${item.Dose}`]: item.Stock,
+      });
+    }
+    return acc;
+  }, []);
+
+  result.forEach(item => {
+    for (let i = 1; i <= 3; i++) {
+      if (!item[`dosis${i}`]) {
+        item[`dosis${i}`] = 0;
+      }
+    }
+  });
+
+  useEffect(() => {
+    dispatch(getVaksinList());
+  }, [dispatch]);
+
   return (
-    <Box sx={{my: 4}}>
+    <Box sx={{ my: 4 }}>
       <TableContainer>
-        <Typography variant='h5'>Statistik Vaksin Tersedia</Typography>
+        <Typography variant="h5">Statistik Vaksin Tersedia</Typography>
         {/* <Typography variant='subtitle2' gutterBottom>Update: Januari 2022</Typography> */}
         <Table>
           <TableHead>
-            <TableRow sx={{backgroundColor: '#EEF6ED'}} height={52}>
-              {cell.map(({id, label}) =>{
-                return <TableCell key={id} sx={{fontWeight: 700}} align= {label.toLowerCase().includes('dosis') ? 'center' : 'left'}>{label}</TableCell>
+            <TableRow sx={{ backgroundColor: "#EEF6ED" }} height={52}>
+              {cell.map(({ id, label }) => {
+                return (
+                  <TableCell
+                    key={id}
+                    sx={{ fontWeight: 700 }}
+                    align={
+                      label.toLowerCase().includes("dosis") ? "center" : "left"
+                    }
+                  >
+                    {label}
+                  </TableCell>
+                );
               })}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(({id, name, dosis1, dosis2, dosis3}) =>{
+            {result.map((item, id) => {
+              const { name, dosis1, dosis2, dosis3 } = item;
               return (
-              <TableRow key={id} height={52}>
-                <TableCell>{name}</TableCell>
-                <TableCell align='center'>{dosis1} dosis</TableCell>
-                <TableCell align='center'>{dosis2} dosis</TableCell>
-                <TableCell align='center'>{dosis3} dosis</TableCell>
-              </TableRow> 
-              )
+                <TableRow key={id} height={52}>
+                  <TableCell>{name}</TableCell>
+                  <TableCell align="center">{dosis1} dosis</TableCell>
+                  <TableCell align="center">{dosis2} dosis</TableCell>
+                  <TableCell align="center">{dosis3} dosis</TableCell>
+                </TableRow>
+              );
             })}
           </TableBody>
         </Table>
       </TableContainer>
     </Box>
-  )
-}
+  );
+};
 
 export default TableVaksinTersedia;
