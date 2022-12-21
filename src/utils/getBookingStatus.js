@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {String} status 
+ * @returns 
+ */
 const getBookingStatus = (status) =>{
   if(status === 'OnProcess'){
     return {statusBook: 'Menunggu', statusColor: 'softWarning'}

@@ -6,7 +6,7 @@ import moment from "moment"
  * @param {String} EndSession 
  * @param {Number} CapacityLeft
  * @param {String} Date
- * @returns {{String, String}} status, color
+ * @returns
  */
 
 const getSessionStatus = ({StartSession, EndSession, CapacityLeft, Date, IsClose}) =>{

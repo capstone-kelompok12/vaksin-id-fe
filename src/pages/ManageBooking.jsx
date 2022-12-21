@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { /*Button, Box, Typography,*/ Card, CardActions, CardContent, Chip, lighten, Stack, Typography } from "@mui/material";
+import { Card, CardActions, CardContent, Chip, lighten, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FilterBooking from "../components/FilterBooking";
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
@@ -119,7 +119,6 @@ const ManageBooking = () => {
               sx={{
                 borderRadius: 2, 
                 flexBasis: '31%', 
-                // bgcolor: '#FBFDF7',
                 cursor: 'pointer',
                 transition: 'ease .5s',
                 '&:hover': {

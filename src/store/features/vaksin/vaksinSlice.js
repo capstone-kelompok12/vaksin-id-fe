@@ -59,7 +59,7 @@ export const vaksinSlice = createSlice({
       state.error = false
       state.data = payload
     })
-    builder.addCase(getVaksinList.rejected, (state, action) =>{
+    builder.addCase(getVaksinList.rejected, (state) =>{
       state.loading = false
       state.error = true
     })
@@ -73,7 +73,7 @@ export const vaksinSlice = createSlice({
       state.data.unshift(payload)
       toast.success('Berhasil menambahkan vaksin!')
     })
-    builder.addCase(addVaksin.rejected, (state, action) =>{
+    builder.addCase(addVaksin.rejected, (state) =>{
       state.loading = false
       state.error = true
       toast.error('Gagal menambahkan vaksin!')
@@ -91,7 +91,7 @@ export const vaksinSlice = createSlice({
       })
       toast.success('Berhasil mengubah stok vaksin!')
     })
-    builder.addCase(updateStock.rejected, (state, action) =>{
+    builder.addCase(updateStock.rejected, (state) =>{
       state.loading = false
       state.error = true
       toast.error('Gagal mengubah stok vaksin!')
@@ -106,7 +106,7 @@ export const vaksinSlice = createSlice({
       state.data = state.data.filter(val => val.ID !== payload.id)
       toast.success('Berhasil menghapus vaksin!')
     })
-    builder.addCase(deleteVaksin.rejected, (state, action) =>{
+    builder.addCase(deleteVaksin.rejected, (state) =>{
       state.loading = false
       state.error = true
       toast.error('Gagal menghapus vaksin!')

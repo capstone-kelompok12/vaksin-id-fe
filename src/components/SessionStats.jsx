@@ -12,9 +12,6 @@ const SessionStats = ({showStatus, data}) => {
     Dose,
     StartSession,
     EndSession,
-    // ID,
-    // IdVaccine,
-    // SessionName,
     Vaccine,
     status,
     color

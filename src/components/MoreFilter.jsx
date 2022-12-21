@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-// import CheckIcon from '@mui/icons-material/Check';
 
 const MoreFilter = ({selectedFilter, setFilter}) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -137,7 +136,6 @@ const FilterWaktu = ({handleClose, selectedFilter, setFilter}) =>{
 const FilterDosis = ({handleClose, selectedFilter, setFilter}) =>{
   const {dosis} = selectedFilter
   const [anchorEl, setAnchorEl] = useState(null)
-  // const [selectedFilter, setSelectedFilter] = useState('')
   const open = Boolean(anchorEl)
   
   const handleClick = (event) => {

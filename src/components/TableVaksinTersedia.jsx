@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
-// import getGroupedData from "../utils/getGroupDose";
 import { useDispatch, useSelector } from "react-redux";
 import { getVaksinList } from "../store/features/dashboard/dashboardSlice";
 
@@ -66,7 +65,6 @@ const TableVaksinTersedia = () => {
     <Box sx={{ my: 4 }}>
       <TableContainer>
         <Typography variant="h5">Statistik Vaksin Tersedia</Typography>
-        {/* <Typography variant='subtitle2' gutterBottom>Update: Januari 2022</Typography> */}
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: "#EEF6ED" }} height={52}>
