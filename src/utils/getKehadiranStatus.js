@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {String} status 
+ * @returns 
+ */
 const getKehadiranStatus = (status) =>{
   if(status === 'Attended'){
     return {kehadiran: 'Hadir', attendColor: 'softSuccess'}

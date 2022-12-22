@@ -36,7 +36,6 @@ const Navbar = () => {
 
   return (
     <Box
-      // maxWidth="xl"
       sx={{
         position: "sticky",
         top: 0,
@@ -57,12 +56,6 @@ const Navbar = () => {
       }}
     >
       <Stack direction={"row"} spacing={2} alignItems="center">
-        {/* <IconButton 
-          onClick={() => dispatch(toggleSidebar()) }
-          size="large"
-        >
-          <MenuRoundedIcon fontSize="inherit" />
-        </IconButton> */}
         <Typography variant="h5">
           {heading !== "" ? getHeading(pathname) : "DASHBOARD"}
         </Typography>
@@ -71,7 +64,7 @@ const Navbar = () => {
       <Stack direction={"row"} spacing={2} alignItems="center">
         <IconButton aria-label="toggle-sidebar" size="large">
           <NotificationsNoneOutlinedIcon
-            /*color='danger'*/ fontSize="inherit"
+            fontSize="inherit"
           />
         </IconButton>
         <Typography>Hi, Admin!</Typography>

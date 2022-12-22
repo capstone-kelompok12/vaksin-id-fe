@@ -11,6 +11,7 @@ import { confirmBooking, getSessionDetail } from '../store/features/session/sess
 import getBookingStatus from '../utils/getBookingStatus';
 import moment from 'moment/moment';
 import Auth from '../utils/Auth';
+import { toast } from 'react-toastify';
 
 const BookDetail = () => {
   const {id} = useParams()
@@ -71,7 +72,7 @@ const BookDetail = () => {
     {field: 'antrian', headerName: 'Antrian', width: 90, align: 'center', headerAlign: 'center'},
   ]
 
-  const {SessionName, Booking} = sessionDetail
+  const {SessionName, Booking, CapacityLeft} = sessionDetail
 
   const rows = Booking.map(val =>{
     const {ID: id, Status, Queue: antrian, User, IdSession: id_session } = val
@@ -115,7 +116,9 @@ const BookDetail = () => {
     const data = selectedRows.map(val =>{
       return({...val, status: updatedStatus})
     })
-    dispatch(confirmBooking(data))
+    selectedRows.length > CapacityLeft
+    ? toast.error('Jumlah booking melebihi kapasitas maksimal!')
+    : dispatch(confirmBooking(data))
     setSelectedRows([])
   }
 
@@ -130,8 +133,6 @@ const BookDetail = () => {
       spacing={2}
       sx={{
         width: '100%',
-        // maxWidth: 1030,
-        // height: '100vh',
         p: 3,
       }}
     >
@@ -149,10 +150,6 @@ const BookDetail = () => {
           maxWidth: 1090,
           position: 'relative',
           py: 6
-          // '& .MuiDataGrid-row:hover': {
-          //   cursor: 'pointer',
-          //   color: 'primary.main',
-          // },
         }}
       >
         {selectedRows.length > 0 && 

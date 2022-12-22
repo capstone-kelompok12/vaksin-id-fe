@@ -17,7 +17,7 @@ import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import VaccinesOutlinedIcon from '@mui/icons-material/VaccinesOutlined';
 import vaksinIDLogo from '../assets/img/logo-vaksin-id-with-name.png'
-import { /*Link as RouterLink,*/ NavLink as NavLinkBase, useLocation } from 'react-router-dom';
+import { NavLink as NavLinkBase, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import theme from '../themes';
 

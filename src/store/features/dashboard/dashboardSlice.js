@@ -18,7 +18,6 @@ export const fetchUserStatic = createAsyncThunk(
       const response = await DashboardApi.UserStatic();
       return response.data.data;
     } catch (err) {
-      console.log(err);
       return err;
     }
   }

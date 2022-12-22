@@ -2,8 +2,10 @@ import React from "react";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Nurse from "../assets/img/nurse.png";
 import theme from '../themes'
+import useCurrentScreen from "../hooks/useCurrentScreen";
 
 const Banner = () => {
+  const {mobile} = useCurrentScreen()
   return (
     <Box
       disableGutters
@@ -12,13 +14,14 @@ const Banner = () => {
         width: "100%",
         background: theme.color.greenOpaque,
         my: 6,
-        py: 4
+        py: 4,
+        mt: mobile ? 20 : 6
       }}
     >
       <Container
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: mobile ? 'column' : "row",
           justifyContent: "space-between",
           alignItems: "center",
           gap: 8,
