@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { /*Button, Box, Typography,*/ Chip, Stack } from "@mui/material";
+import { Chip, Stack } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ModalAddSession from "../components/ModalAddSession";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {/* closeSession,*/ closeSession, getSessionList } from "../store/features/session/sessionSlice";
+import { closeSession, getSessionList } from "../store/features/session/sessionSlice";
 import moment from "moment/moment";
 
 const columns = [
@@ -21,7 +21,7 @@ const columns = [
     headerName: 'Status', 
     width: 160,
     renderCell: (props) =>{
-      const {/*id, tanggal, waktu, dosis, namaSesi, vaksin, kapasitas,*/ status, color } = props.row
+      const { status, color } = props.row
       return <Chip label={status} color={color} sx={{color: `${color}.text`}} />
     },
   },{
@@ -47,7 +47,6 @@ const ManageSession = () => {
       StartSession, 
       EndSession, 
       SessionName: namaSesi, 
-      // Booking, 
       Capacity, 
       CapacityLeft,
       Dose: dosis,
@@ -93,7 +92,6 @@ const ManageSession = () => {
       sx={{
         width: '100%',
         maxWidth: 1030,
-        // height: '100vh',
         p: 3,
         '& .MuiDataGrid-row:hover': {
           cursor: 'pointer',

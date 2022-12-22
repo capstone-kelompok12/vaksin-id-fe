@@ -11,12 +11,12 @@ const menuList = [
   },
   {
     label: 'Tentang Kami',
-    top: 545,
+    top: 520,
     path: '/#about',
   },
   {
     label: 'Layanan',
-    top: 1050,
+    top: 1000,
     path: '/#service',
   },
 ]

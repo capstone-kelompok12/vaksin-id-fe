@@ -1,7 +1,6 @@
 import { Card, CardContent, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import DashboardApi from "../apis/dashboard.api";
-// import DashboardApi from "../apis/dashboard.api";
 import formatNumber from "../utils/formatNumber";
 
 const Overview = () => {
@@ -43,26 +42,25 @@ const Overview = () => {
 
   const fetchData = () =>{
     DashboardApi.fetchBookings()
-    .then(res =>{
-      setBooking(res.data.data.Booking)
-    })
-    .catch(err => {throw err})
-  DashboardApi.fetchSessionsActive()
-  .then(res =>{
-    setActiveSession(res.data.data.Active)
-  })
-  .catch(err => {throw err})
-  DashboardApi.fetchSessionsDone()
-  .then(res =>{
-    setSessionDone(res.data.data.Amount)
-    console.log(res)
-  })
-  .catch(err => {throw err})
-  DashboardApi.fetchUserVaccinated()
-  .then(res =>{
-    setPatient(res.data.data.Vaccinated)
-  })
-  .catch(err => {throw err})
+      .then(res =>{
+        setBooking(res.data.data.Booking)
+      })
+      .catch(err => {throw err})
+    DashboardApi.fetchSessionsActive()
+      .then(res =>{
+        setActiveSession(res.data.data.Active)
+      })
+      .catch(err => {throw err})
+    DashboardApi.fetchSessionsDone()
+      .then(res =>{
+        setSessionDone(res.data.data.Amount)
+      })
+      .catch(err => {throw err})
+    DashboardApi.fetchUserVaccinated()
+      .then(res =>{
+        setPatient(res.data.data.Vaccinated)
+      })
+      .catch(err => {throw err})
   }
 
   useEffect(() =>{
@@ -77,9 +75,7 @@ const Overview = () => {
         return (
           <Card
             key={id}
-            // elevation={3}
             sx={{
-              // width: "30%",
               flexBasis: "25%",
               bgcolor: `${color}.main`,
               color: `${color}.text`,

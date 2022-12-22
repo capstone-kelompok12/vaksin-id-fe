@@ -87,8 +87,6 @@ const VaccineStock = () => {
           sx={{
             width: '100%',
             maxWidth: 1000,
-            // height: '100vh',
-            // p: 3,
           }}
         >
           <DataGrid 

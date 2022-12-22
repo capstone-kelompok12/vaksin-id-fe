@@ -153,7 +153,6 @@ const ModalAddEditStock = ({data, edit}) => {
               </Select>
             </FormControl>
             <TextField 
-              // labelId='label-stok'
               id='input-stok'
               label='Stok Vaksin'
               type={'number'}

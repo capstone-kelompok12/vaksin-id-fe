@@ -5,8 +5,10 @@ import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import theme from "../themes";
+import useCurrentScreen from "../hooks/useCurrentScreen";
 
 const FooterLanding = () => {
+  const {mobile, tablet} = useCurrentScreen()
   return (
     <>
       <Box
@@ -24,7 +26,7 @@ const FooterLanding = () => {
               py: 6
             }}
           >
-            <Stack direction='row' spacing={2}>
+            <Stack direction={(mobile || tablet) ? 'column' : 'row'} spacing={2}>
               <Link underline="hover">
                 Syarat dan Ketentuan
               </Link>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, CircularProgress, IconButton, InputAdornment, Link, Stack, TextField } from '@mui/material'
+import { Box, Button, CircularProgress, IconButton, InputAdornment, Link, Stack, TextField, useMediaQuery } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
@@ -28,6 +28,7 @@ const LoginForm = () => {
   const [values, setValues] = useState(INITIAL_VALUE);
   const [error, setError] = useState(INITIAL_ERROR)
   const [allowSubmit, setAllowSubmit] = useState(false)
+  const tablet = useMediaQuery('(max-width: 920px)')
   
   const valid = Boolean(error.email === '' && error.password === '')
 
@@ -132,12 +133,12 @@ const LoginForm = () => {
   return (
     <Box
       sx={{
-        width: '60vw',
+        width: tablet ? '100%' : '60vw',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        px: 18
+        px: !tablet && 18
       }}
     >
       <img
@@ -149,7 +150,7 @@ const LoginForm = () => {
         src={Logo}
         alt="logo-vaksin-id"
       />
-      <Stack spacing={3} sx={{width: '100%', alignItems: 'center'}}>
+      <Stack spacing={3} sx={{width: tablet ? '75%' : '100%', alignItems: 'center'}}>
         <TextField
           autoFocus
           variant="outlined"
@@ -194,7 +195,6 @@ const LoginForm = () => {
                   aria-label="toggle password visibility"
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
-                  // edge="end"
                 >
                   {values.showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>

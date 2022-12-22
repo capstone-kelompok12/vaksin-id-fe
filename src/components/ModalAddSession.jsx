@@ -82,8 +82,6 @@ const ModalAddSession = () => {
 
   const handlePickDate = (e) =>{
     const selectedDate = moment(e)
-    // .format('DD/MM/YYYY')
-    // console.log(selectedDate)
     setFormData({...formData, date: selectedDate})
   }
 

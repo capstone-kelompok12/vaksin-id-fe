@@ -20,7 +20,6 @@ const SessionDetail = () => {
   const [selectedRows, setSelectedRows] = useState([])
   const dispatch = useDispatch()
   const sessionDetail = useSelector(state => state.session.detail)
-  // dispatch(confirmKehadiran({id: 'lorem', status: 'ipsum'}))
   
   const columns =[
     {field: 'nik', headerName: 'NIK', width: 200},
@@ -80,8 +79,6 @@ const SessionDetail = () => {
     const {ID: id, Status, Queue: antrian, User, /*IdSession: id_session,*/kehadiran, attendColor } = val
     const {NIK: nik, Fullname: nama, Email: email, BirthDate} = User
     const {statusBook, statusColor} = getBookingStatus(Status)
-    console.log({statusBook, statusColor, val})
-    // const {kehadiran, attendColor} = getKehadiranStatus(Status)
     const umur = moment().diff(BirthDate, 'years')
     
     return(
@@ -113,8 +110,6 @@ const SessionDetail = () => {
       spacing={2}
       sx={{
         width: '100%',
-        // maxWidth: 1030,
-        // height: '100vh',
         p: 3,
       }}
     >
@@ -132,10 +127,6 @@ const SessionDetail = () => {
         maxWidth: 1090,
         position: 'relative',
         py: 6
-        // '& .MuiDataGrid-row:hover': {
-        //   cursor: 'pointer',
-        //   color: 'primary.main',
-        // },
       }}
       >
         {selectedRows.length > 0 && 

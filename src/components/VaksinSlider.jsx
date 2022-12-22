@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 import React from 'react'
 import { Slide } from 'react-slideshow-image'
+import useCurrentScreen from '../hooks/useCurrentScreen'
 
 const vaksin = [
   {name: 'sinovac'},
@@ -15,6 +16,7 @@ const vaksin = [
 ]
 
 const VaksinSlider = () => {
+  const {mobile} = useCurrentScreen()
   return (
     <Box 
       className='slide-container'
@@ -25,7 +27,7 @@ const VaksinSlider = () => {
         borderRadius: '0px 0px 18px 18px',
       }}      
     >
-      <Slide slidesToScroll={1} slidesToShow={5} duration={2500}>
+      <Slide slidesToScroll={1} slidesToShow={mobile ? 4 : 5} duration={2500}>
         {vaksin.map((item, idx) =>{
           const {name} = item
           return(
@@ -46,7 +48,7 @@ const VaksinSlider = () => {
                 src={require(`../assets/img/vaksin/${name}.png`)} 
                 alt={name}
                 loading='lazy'
-                width={'186'}
+                width={mobile ? '142vw' : '150vw'}
               />
             </div>
           )

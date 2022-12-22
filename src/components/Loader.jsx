@@ -9,8 +9,6 @@ const Loader = () => {
         width: '100vw',
         height: '100vh',
         position: 'absolute',
-        // justifyContent: 'center',
-        // alignItems: 'center',
         zIndex: 10000
       }}
     >

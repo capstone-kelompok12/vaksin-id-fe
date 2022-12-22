@@ -13,7 +13,6 @@ const columns = [
     field: 'num',
     headerName: 'No.',
     width: 120,
-    // headerClassName: 'super-app-theme--header',
     hideable: false,
     align: 'center',
     headerAlign: 'center',
@@ -21,7 +20,6 @@ const columns = [
     field: 'name',
     headerName: 'Nama Vaksin',
     width: 780,
-    // headerClassName: 'super-app-theme--header',
     hideable: false,
     align: 'center',
     headerAlign: 'center'
@@ -86,7 +84,6 @@ const VaccineList = () => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          // alignItems: 'center',
           gap: 4,
           p: 3,
         }}
@@ -117,13 +114,9 @@ const VaccineList = () => {
           sx={{
             width: '100%',
             maxWidth: 920,
-            // '& .super-app-theme--header': {
-            //   bgcolor: '#EEF6ED',
-            // }
           }}
         >
           <DataGrid
-            // loading={true}
             autoHeight
             columns={columns}
             rows={rows}
